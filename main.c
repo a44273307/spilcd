@@ -2,6 +2,7 @@
 #include <intrins.h>
 #include <stdio.h>
 #include "lcd.h"
+#include <string.h>
 #define u8 unsigned char
 #define FOSC 11059200UL
 #define BRT (65536 - FOSC / 9600 / 4)
@@ -172,7 +173,11 @@ void keyallchuli()
 }
 #define LCD_W 240
 #define LCD_H 320
-
+void showdata()
+{
+	// char data[100];
+	// sprintf(data,"")
+}
 void main()
 {
 	  P0M0 = 0x00;
@@ -206,13 +211,13 @@ void main()
 	delay_ms(100);
 	while(1)
 	{
-
+        
 		// LCD_ShowChinese(0,0,"ÖÐ¾°Ô°µç×Ó",RED,WHITE,32,0);
-		// LCD_ShowString(0,40,"LCD_W:",RED,WHITE,16,0);
-		LCD_ShowIntNum(48,40,LCD_W,3,RED,WHITE,16);
-		LCD_ShowString(80,40,"LCD_H:",RED,WHITE,16,0);
-		// LCD_ShowIntNum(128,40,LCD_H,3,RED,WHITE,16);
+		LCD_ShowString(0,40,"LCD_W:",RED,WHITE,16,0);
+		// LCD_ShowIntNum(48,40,LCD_W,3,RED,WHITE,16);
 		// LCD_ShowString(80,40,"LCD_H:",RED,WHITE,16,0);
+		// LCD_ShowIntNum(128,40,LCD_H,3,RED,WHITE,16);
+		LCD_ShowString(80,40,"LCD_H:",RED,WHITE,16,0);
 		// LCD_ShowString(0,70,"Increaseing Nun:",RED,WHITE,16,0);
 		delay_ms(300);
 		// LCD_ShowString(0,40,"LCD_W:",RED,WHITE,16,0);

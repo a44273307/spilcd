@@ -33,8 +33,6 @@ void Draw_Circle(u16 x0,u16 y0,u8 r,u16 color);//在指定位置画一个圆
 void LCD_ShowChinese(u16 x,u16 y,u8 *s,u16 fc,u16 bc,u8 sizey,u8 mode);//显示汉字串
 void LCD_ShowChinese12x12(u16 x,u16 y,u8 *s,u16 fc,u16 bc,u8 sizey,u8 mode);//显示单个12x12汉字
 void LCD_ShowChinese16x16(u16 x,u16 y,u8 *s,u16 fc,u16 bc,u8 sizey,u8 mode);//显示单个16x16汉字
-void LCD_ShowChinese24x24(u16 x,u16 y,u8 *s,u16 fc,u16 bc,u8 sizey,u8 mode);//显示单个24x24汉字
-void LCD_ShowChinese32x32(u16 x,u16 y,u8 *s,u16 fc,u16 bc,u8 sizey,u8 mode);//显示单个32x32汉字
 
 void LCD_ShowChar(u16 x,u16 y,u8 num,u16 fc,u16 bc,u8 sizey,u8 mode);//显示一个字符
 void LCD_ShowString(u16 x,u16 y,const u8 *p,u16 fc,u16 bc,u8 sizey,u8 mode);//显示字符串
@@ -47,6 +45,7 @@ void LCD_WR_REG(u8 dat);
 void LCD_WR_DATA8(u8 dat);
 
 void delay_ms(unsigned int ms);
+void LCD_Clear(unsigned int color);
 //画笔颜色
 #define WHITE         	 0xFFFF
 #define BLACK         	 0x0000	  

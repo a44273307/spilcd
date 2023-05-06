@@ -65,98 +65,99 @@ void LCD_Init()
 	LCD_RESET=0;
 	delay_ms(10);
 	LCD_RESET=1;
-
-
-	LCD_WR_REG(0x11); //Sleep out 
-	delay_ms(120);              //Delay 120ms 
-	//************* Start Initial Sequence **********// 
-	LCD_WR_REG(0xCF);
-	LCD_WR_DATA8(0x00);
-	LCD_WR_DATA8(0xC1);
-	LCD_WR_DATA8(0X30);
-	LCD_WR_REG(0xED);
-	LCD_WR_DATA8(0x64);
-	LCD_WR_DATA8(0x03);
-	LCD_WR_DATA8(0X12);
-	LCD_WR_DATA8(0X81);
-	LCD_WR_REG(0xE8);
-	LCD_WR_DATA8(0x85);
-	LCD_WR_DATA8(0x00);
-	LCD_WR_DATA8(0x79);
-	LCD_WR_REG(0xCB);
-	LCD_WR_DATA8(0x39);
-	LCD_WR_DATA8(0x2C);
-	LCD_WR_DATA8(0x00);
-	LCD_WR_DATA8(0x34);
-	LCD_WR_DATA8(0x02);
-	LCD_WR_REG(0xF7);
-	LCD_WR_DATA8(0x20);
-	LCD_WR_REG(0xEA);
-	LCD_WR_DATA8(0x00);
-	LCD_WR_DATA8(0x00);
-	LCD_WR_REG(0xC0); //Power control
-	LCD_WR_DATA8(0x1D); //VRH[5:0]
-	LCD_WR_REG(0xC1); //Power control
-	LCD_WR_DATA8(0x12); //SAP[2:0];BT[3:0]
-	LCD_WR_REG(0xC5); //VCM control
-	LCD_WR_DATA8(0x33);
-	LCD_WR_DATA8(0x3F);
-	LCD_WR_REG(0xC7); //VCM control
-	LCD_WR_DATA8(0x92);
-	LCD_WR_REG(0x3A); // Memory Access Control
-	LCD_WR_DATA8(0x55);
-	LCD_WR_REG(0x36); // Memory Access Control
-	if(USE_HORIZONTAL==0)LCD_WR_DATA8(0x08);
-	else if(USE_HORIZONTAL==1)LCD_WR_DATA8(0xC8);
-	else if(USE_HORIZONTAL==2)LCD_WR_DATA8(0x78);
-	else LCD_WR_DATA8(0xA8);
-	LCD_WR_REG(0xB1);
-	LCD_WR_DATA8(0x00);
-	LCD_WR_DATA8(0x12);
-	LCD_WR_REG(0xB6); // Display Function Control
-	LCD_WR_DATA8(0x0A);
-	LCD_WR_DATA8(0xA2);
-
-	LCD_WR_REG(0x44);
-	LCD_WR_DATA8(0x02);
-
-	LCD_WR_REG(0xF2); // 3Gamma Function Disable
-	LCD_WR_DATA8(0x00);
-	LCD_WR_REG(0x26); //Gamma curve selected
-	LCD_WR_DATA8(0x01);
-	LCD_WR_REG(0xE0); //Set Gamma
-	LCD_WR_DATA8(0x0F);
-	LCD_WR_DATA8(0x22);
-	LCD_WR_DATA8(0x1C);
-	LCD_WR_DATA8(0x1B);
-	LCD_WR_DATA8(0x08);
-	LCD_WR_DATA8(0x0F);
-	LCD_WR_DATA8(0x48);
-	LCD_WR_DATA8(0xB8);
-	LCD_WR_DATA8(0x34);
-	LCD_WR_DATA8(0x05);
-	LCD_WR_DATA8(0x0C);
-	LCD_WR_DATA8(0x09);
-	LCD_WR_DATA8(0x0F);
-	LCD_WR_DATA8(0x07);
-	LCD_WR_DATA8(0x00);
-	LCD_WR_REG(0XE1); //Set Gamma
-	LCD_WR_DATA8(0x00);
-	LCD_WR_DATA8(0x23);
-	LCD_WR_DATA8(0x24);
-	LCD_WR_DATA8(0x07);
-	LCD_WR_DATA8(0x10);
-	LCD_WR_DATA8(0x07);
-	LCD_WR_DATA8(0x38);
-	LCD_WR_DATA8(0x47);
-	LCD_WR_DATA8(0x4B);
-	LCD_WR_DATA8(0x0A);
-	LCD_WR_DATA8(0x13);
-	LCD_WR_DATA8(0x06);
-	LCD_WR_DATA8(0x30);
-	LCD_WR_DATA8(0x38);
-	LCD_WR_DATA8(0x0F);
-	LCD_WR_REG(0x29); //Display on
+	delay_ms(120);
+	LCD_CD_REG(0xCF);  
+	LCD_CD_DATA(0x00); 
+	LCD_CD_DATA(0xC1); 
+	LCD_CD_DATA(0X30); 
+	LCD_CD_REG(0xED);  
+	LCD_CD_DATA(0x64); 
+	LCD_CD_DATA(0x03); 
+	LCD_CD_DATA(0X12); 
+	LCD_CD_DATA(0X81); 
+	LCD_CD_REG(0xE8);  
+	LCD_CD_DATA(0x85); 
+	LCD_CD_DATA(0x10); 
+	LCD_CD_DATA(0x7A); 
+	LCD_CD_REG(0xCB);  
+	LCD_CD_DATA(0x39); 
+	LCD_CD_DATA(0x2C); 
+	LCD_CD_DATA(0x00); 
+	LCD_CD_DATA(0x34); 
+	LCD_CD_DATA(0x02); 
+	LCD_CD_REG(0xF7);  
+	LCD_CD_DATA(0x20); 
+	LCD_CD_REG(0xEA);  
+	LCD_CD_DATA(0x00); 
+	LCD_CD_DATA(0x00); 
+	LCD_CD_REG(0xC0);    //Power control 
+	LCD_CD_DATA(0x1B);   //VRH[5:0] 
+	LCD_CD_REG(0xC1);    //Power control 
+	LCD_CD_DATA(0x01);   //SAP[2:0];BT[3:0] 
+	LCD_CD_REG(0xC5);    //VCM control 
+	LCD_CD_DATA(0x30); 	 //3F
+	LCD_CD_DATA(0x30); 	 //3C
+	LCD_CD_REG(0xC7);    //VCM control2 
+	LCD_CD_DATA(0XB7); 
+	LCD_CD_REG(0x36);    // Memory Access Control 
+	LCD_CD_DATA(0x48); 
+	LCD_CD_REG(0x3A);   
+	LCD_CD_DATA(0x55); 
+	LCD_CD_REG(0xB1);   
+	LCD_CD_DATA(0x00);   
+	LCD_CD_DATA(0x1A); 
+	LCD_CD_REG(0xB6);    // Display Function Control 
+	LCD_CD_DATA(0x0A); 
+	LCD_CD_DATA(0xA2); 
+	LCD_CD_REG(0xF2);    // 3Gamma Function Disable 
+	LCD_CD_DATA(0x00); 
+	LCD_CD_REG(0x26);    //Gamma curve selected 
+	LCD_CD_DATA(0x01); 
+	LCD_CD_REG(0xE0);    //Set Gamma 
+	LCD_CD_DATA(0x0F); 
+	LCD_CD_DATA(0x2A); 
+	LCD_CD_DATA(0x28); 
+	LCD_CD_DATA(0x08); 
+	LCD_CD_DATA(0x0E); 
+	LCD_CD_DATA(0x08); 
+	LCD_CD_DATA(0x54); 
+	LCD_CD_DATA(0XA9); 
+	LCD_CD_DATA(0x43); 
+	LCD_CD_DATA(0x0A); 
+	LCD_CD_DATA(0x0F); 
+	LCD_CD_DATA(0x00); 
+	LCD_CD_DATA(0x00); 
+	LCD_CD_DATA(0x00); 
+	LCD_CD_DATA(0x00); 		 
+	LCD_CD_REG(0XE1);    //Set Gamma 
+	LCD_CD_DATA(0x00); 
+	LCD_CD_DATA(0x15); 
+	LCD_CD_DATA(0x17); 
+	LCD_CD_DATA(0x07); 
+	LCD_CD_DATA(0x11); 
+	LCD_CD_DATA(0x06); 
+	LCD_CD_DATA(0x2B); 
+	LCD_CD_DATA(0x56); 
+	LCD_CD_DATA(0x3C); 
+	LCD_CD_DATA(0x05); 
+	LCD_CD_DATA(0x10); 
+	LCD_CD_DATA(0x0F); 
+	LCD_CD_DATA(0x3F); 
+	LCD_CD_DATA(0x3F); 
+	LCD_CD_DATA(0x0F); 
+	LCD_CD_REG(0x2B); 
+	LCD_CD_DATA(0x00);
+	LCD_CD_DATA(0x00);
+	LCD_CD_DATA(0x01);
+	LCD_CD_DATA(0x3f);
+	LCD_CD_REG(0x2A); 
+	LCD_CD_DATA(0x00);
+	LCD_CD_DATA(0x00);
+	LCD_CD_DATA(0x00);
+	LCD_CD_DATA(0xef);	 
+	LCD_CD_REG(0x11); //Exit Sleep
+	delay_ms(120);
+	LCD_CD_REG(0x29); //display on	
 }
 
 void LCD_SetArea(unsigned int stx,unsigned int sty,unsigned int endx,unsigned int endy)
@@ -179,7 +180,7 @@ void LcdWirteColorData(unsigned int color)
 	LCD_CS=0;
 	LCD_CD=1;
 	SPI_RW(color>>8);
-	SPI_RW(color);
+	SPI_RW(color&0xff);
 	LCD_CS=1;
 }
 
@@ -360,259 +361,7 @@ void Draw_Circle(u16 x0,u16 y0,u8 r,u16 color)
 	}
 }
 
-/******************************************************************************
-      函数说明：显示汉字串
-      入口数据：x,y显示坐标
-                *s 要显示的汉字串
-                fc 字的颜色
-                bc 字的背景色
-                sizey 字号 可选 16 24 32
-                mode:  0非叠加模式  1叠加模式
-      返回值：  无
-******************************************************************************/
-void LCD_ShowChinese(u16 x,u16 y,u8 *s,u16 fc,u16 bc,u8 sizey,u8 mode)
-{
-	while(*s!=0)
-	{
-		if(sizey==12) LCD_ShowChinese12x12(x,y,s,fc,bc,sizey,mode);
-		else if(sizey==16) LCD_ShowChinese16x16(x,y,s,fc,bc,sizey,mode);
-		else if(sizey==24) LCD_ShowChinese24x24(x,y,s,fc,bc,sizey,mode);
-		else if(sizey==32) LCD_ShowChinese32x32(x,y,s,fc,bc,sizey,mode);
-		else return;
-		s+=2;
-		x+=sizey;
-	}
-}
 
-/******************************************************************************
-      函数说明：显示单个12x12汉字
-      入口数据：x,y显示坐标
-                *s 要显示的汉字
-                fc 字的颜色
-                bc 字的背景色
-                sizey 字号
-                mode:  0非叠加模式  1叠加模式
-      返回值：  无
-******************************************************************************/
-void LCD_ShowChinese12x12(u16 x,u16 y,u8 *s,u16 fc,u16 bc,u8 sizey,u8 mode)
-{
-	u8 i,j,m=0;
-	u16 k;
-	u16 HZnum;//汉字数目
-	u16 TypefaceNum;//一个字符所占字节大小
-	u16 x0=x;
-	TypefaceNum=(sizey/8+((sizey%8)?1:0))*sizey;
-	                         
-	HZnum=sizeof(tfont12)/sizeof(typFNT_GB12);	//统计汉字数目
-	for(k=0;k<HZnum;k++) 
-	{
-		if((tfont12[k].Index[0]==*(s))&&(tfont12[k].Index[1]==*(s+1)))
-		{ 	
-			LCD_Address_Set(x,y,x+sizey-1,y+sizey-1);
-			for(i=0;i<TypefaceNum;i++)
-			{
-				for(j=0;j<8;j++)
-				{	
-					if(!mode)//非叠加方式
-					{
-						if(tfont12[k].Msk[i]&(0x01<<j))LCD_WR_DATA(fc);
-						else LCD_WR_DATA(bc);
-						m++;
-						if(m%sizey==0)
-						{
-							m=0;
-							break;
-						}
-					}
-					else//叠加方式
-					{
-						if(tfont12[k].Msk[i]&(0x01<<j))	LCD_DrawPoint(x,y,fc);//画一个点
-						x++;
-						if((x-x0)==sizey)
-						{
-							x=x0;
-							y++;
-							break;
-						}
-					}
-				}
-			}
-		}				  	
-		continue;  //查找到对应点阵字库立即退出，防止多个汉字重复取模带来影响
-	}
-} 
-
-/******************************************************************************
-      函数说明：显示单个16x16汉字
-      入口数据：x,y显示坐标
-                *s 要显示的汉字
-                fc 字的颜色
-                bc 字的背景色
-                sizey 字号
-                mode:  0非叠加模式  1叠加模式
-      返回值：  无
-******************************************************************************/
-void LCD_ShowChinese16x16(u16 x,u16 y,u8 *s,u16 fc,u16 bc,u8 sizey,u8 mode)
-{
-	u8 i,j,m=0;
-	u16 k;
-	u16 HZnum;//汉字数目
-	u16 TypefaceNum;//一个字符所占字节大小
-	u16 x0=x;
-  TypefaceNum=(sizey/8+((sizey%8)?1:0))*sizey;
-	HZnum=sizeof(tfont16)/sizeof(typFNT_GB16);	//统计汉字数目
-	for(k=0;k<HZnum;k++) 
-	{
-		if ((tfont16[k].Index[0]==*(s))&&(tfont16[k].Index[1]==*(s+1)))
-		{ 	
-			LCD_Address_Set(x,y,x+sizey-1,y+sizey-1);
-			for(i=0;i<TypefaceNum;i++)
-			{
-				for(j=0;j<8;j++)
-				{	
-					if(!mode)//非叠加方式
-					{
-						if(tfont16[k].Msk[i]&(0x01<<j))LCD_WR_DATA(fc);
-						else LCD_WR_DATA(bc);
-						m++;
-						if(m%sizey==0)
-						{
-							m=0;
-							break;
-						}
-					}
-					else//叠加方式
-					{
-						if(tfont16[k].Msk[i]&(0x01<<j))	LCD_DrawPoint(x,y,fc);//画一个点
-						x++;
-						if((x-x0)==sizey)
-						{
-							x=x0;
-							y++;
-							break;
-						}
-					}
-				}
-			}
-		}				  	
-		continue;  //查找到对应点阵字库立即退出，防止多个汉字重复取模带来影响
-	}
-} 
-
-
-/******************************************************************************
-      函数说明：显示单个24x24汉字
-      入口数据：x,y显示坐标
-                *s 要显示的汉字
-                fc 字的颜色
-                bc 字的背景色
-                sizey 字号
-                mode:  0非叠加模式  1叠加模式
-      返回值：  无
-******************************************************************************/
-void LCD_ShowChinese24x24(u16 x,u16 y,u8 *s,u16 fc,u16 bc,u8 sizey,u8 mode)
-{
-	u8 i,j,m=0;
-	u16 k;
-	u16 HZnum;//汉字数目
-	u16 TypefaceNum;//一个字符所占字节大小
-	u16 x0=x;
-	TypefaceNum=(sizey/8+((sizey%8)?1:0))*sizey;
-	HZnum=sizeof(tfont24)/sizeof(typFNT_GB24);	//统计汉字数目
-	for(k=0;k<HZnum;k++) 
-	{
-		if ((tfont24[k].Index[0]==*(s))&&(tfont24[k].Index[1]==*(s+1)))
-		{ 	
-			LCD_Address_Set(x,y,x+sizey-1,y+sizey-1);
-			for(i=0;i<TypefaceNum;i++)
-			{
-				for(j=0;j<8;j++)
-				{	
-					if(!mode)//非叠加方式
-					{
-						if(tfont24[k].Msk[i]&(0x01<<j))LCD_WR_DATA(fc);
-						else LCD_WR_DATA(bc);
-						m++;
-						if(m%sizey==0)
-						{
-							m=0;
-							break;
-						}
-					}
-					else//叠加方式
-					{
-						if(tfont24[k].Msk[i]&(0x01<<j))	LCD_DrawPoint(x,y,fc);//画一个点
-						x++;
-						if((x-x0)==sizey)
-						{
-							x=x0;
-							y++;
-							break;
-						}
-					}
-				}
-			}
-		}				  	
-		continue;  //查找到对应点阵字库立即退出，防止多个汉字重复取模带来影响
-	}
-} 
-
-/******************************************************************************
-      函数说明：显示单个32x32汉字
-      入口数据：x,y显示坐标
-                *s 要显示的汉字
-                fc 字的颜色
-                bc 字的背景色
-                sizey 字号
-                mode:  0非叠加模式  1叠加模式
-      返回值：  无
-******************************************************************************/
-void LCD_ShowChinese32x32(u16 x,u16 y,u8 *s,u16 fc,u16 bc,u8 sizey,u8 mode)
-{
-	u8 i,j,m=0;
-	u16 k;
-	u16 HZnum;//汉字数目
-	u16 TypefaceNum;//一个字符所占字节大小
-	u16 x0=x;
-	TypefaceNum=(sizey/8+((sizey%8)?1:0))*sizey;
-	HZnum=sizeof(tfont32)/sizeof(typFNT_GB32);	//统计汉字数目
-	for(k=0;k<HZnum;k++) 
-	{
-		if ((tfont32[k].Index[0]==*(s))&&(tfont32[k].Index[1]==*(s+1)))
-		{ 	
-			LCD_Address_Set(x,y,x+sizey-1,y+sizey-1);
-			for(i=0;i<TypefaceNum;i++)
-			{
-				for(j=0;j<8;j++)
-				{	
-					if(!mode)//非叠加方式
-					{
-						if(tfont32[k].Msk[i]&(0x01<<j))LCD_WR_DATA(fc);
-						else LCD_WR_DATA(bc);
-						m++;
-						if(m%sizey==0)
-						{
-							m=0;
-							break;
-						}
-					}
-					else//叠加方式
-					{
-						if(tfont32[k].Msk[i]&(0x01<<j))	LCD_DrawPoint(x,y,fc);//画一个点
-						x++;
-						if((x-x0)==sizey)
-						{
-							x=x0;
-							y++;
-							break;
-						}
-					}
-				}
-			}
-		}				  	
-		continue;  //查找到对应点阵字库立即退出，防止多个汉字重复取模带来影响
-	}
-}
 
 
 /******************************************************************************
@@ -633,7 +382,8 @@ void LCD_ShowChar(u16 x,u16 y,u8 num,u16 fc,u16 bc,u8 sizey,u8 mode)
 	sizex=sizey/2;
 	TypefaceNum=(sizex/8+((sizex%8)?1:0))*sizey;
 	num=num-' ';    //得到偏移后的值
-	LCD_Address_Set(x,y,x+sizex-1,y+sizey-1);  //设置光标位置 
+	LCD_SetArea(x,y,x+sizex-1,y+sizey-1);  //设置光标位置 
+	LCD_CD_REG(0x2C);
 	for(i=0;i<TypefaceNum;i++)
 	{ 
 		if(sizey==12)temp=ascii_1206[num][i];		       //调用6x12字体
