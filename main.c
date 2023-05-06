@@ -202,7 +202,7 @@ void main()
 	// printf("123testruning");
 	// printf("xxxx");
 
-	LCD_Fill(0,0,LCD_W,LCD_H,BLUE);
+	LCD_Fill(0,0,LCD_W,LCD_H,WHITE);
 	delay_ms(100);
 	while(1)
 	{
