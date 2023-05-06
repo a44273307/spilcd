@@ -98,208 +98,8 @@ void Timer0Init(void) // 2毫秒@11.0592MHz
 
 
 
-#define DATA_H P2
-#define DATA_L P0
-sbit LCD_LED= P1^1;
-
-sbit LCD_CS = P1^2;
-sbit LCD_CD = P1^0;//就是TFT上的LCD_WR引脚
-sbit LCD_RESET = P0^3;
-////sbit LCD_MOSI = P1^4;
-////sbit LCD_MISO = P1^3;
-//sbit LCD_SCK = P1^5;//就是TFT上的LCD_RS引脚
-
-void Delay1ms()		//@12.000MHz
-{
-	unsigned char i, j;
-
-	i = 12;
-	j = 169;
-	do
-	{
-		while (--j);
-	} while (--i);
-}
-
-void delay_ms(unsigned int ms)
-{
-	while(ms--)
-	{
-		Delay1ms();
-	}
-}
-
-void SPI_RW(unsigned char byte)
-{
-	SPDAT = byte;                           //??????
-  while (!(SPSTAT & 0x80));               //??????
-  SPSTAT = 0xc0;                          //?????
-	
-//	for(bit_ctr=0;bit_ctr<8;bit_ctr++) // 输出8位
-//	{
-//		LCD_SCK=0;
-//		LCD_MOSI=(byte&0x80); // MSB TO MOSI
-//		byte=(byte<<1);	// shift next bit to MSB
-//		LCD_SCK=1;
-//		byte|=LCD_MISO;	        // capture current MISO bit
-//	}
-//	return byte;
-	
-}
-
-void LCD_CD_DATA(unsigned char val)
-{
-	LCD_CS=0;
-	LCD_CD=1;
-	SPI_RW(val);
-	LCD_CS=1;
-}
-
-void LCD_CD_REG(unsigned char reg)
-{
-	LCD_CS=0;
-	LCD_CD=0;
-	SPI_RW(reg);
-	LCD_CS=1;
-}
-int USE_HORIZONTAL=0;
-void LCD_Init()
-{
-	LCD_RESET=0;
-	delay_ms(10);
-	LCD_RESET=1;
 
 
-	LCD_WR_REG(0x11); //Sleep out 
-	delay_ms(120);              //Delay 120ms 
-	//************* Start Initial Sequence **********// 
-	LCD_WR_REG(0xCF);
-	LCD_WR_DATA8(0x00);
-	LCD_WR_DATA8(0xC1);
-	LCD_WR_DATA8(0X30);
-	LCD_WR_REG(0xED);
-	LCD_WR_DATA8(0x64);
-	LCD_WR_DATA8(0x03);
-	LCD_WR_DATA8(0X12);
-	LCD_WR_DATA8(0X81);
-	LCD_WR_REG(0xE8);
-	LCD_WR_DATA8(0x85);
-	LCD_WR_DATA8(0x00);
-	LCD_WR_DATA8(0x79);
-	LCD_WR_REG(0xCB);
-	LCD_WR_DATA8(0x39);
-	LCD_WR_DATA8(0x2C);
-	LCD_WR_DATA8(0x00);
-	LCD_WR_DATA8(0x34);
-	LCD_WR_DATA8(0x02);
-	LCD_WR_REG(0xF7);
-	LCD_WR_DATA8(0x20);
-	LCD_WR_REG(0xEA);
-	LCD_WR_DATA8(0x00);
-	LCD_WR_DATA8(0x00);
-	LCD_WR_REG(0xC0); //Power control
-	LCD_WR_DATA8(0x1D); //VRH[5:0]
-	LCD_WR_REG(0xC1); //Power control
-	LCD_WR_DATA8(0x12); //SAP[2:0];BT[3:0]
-	LCD_WR_REG(0xC5); //VCM control
-	LCD_WR_DATA8(0x33);
-	LCD_WR_DATA8(0x3F);
-	LCD_WR_REG(0xC7); //VCM control
-	LCD_WR_DATA8(0x92);
-	LCD_WR_REG(0x3A); // Memory Access Control
-	LCD_WR_DATA8(0x55);
-	LCD_WR_REG(0x36); // Memory Access Control
-	if(USE_HORIZONTAL==0)LCD_WR_DATA8(0x08);
-	else if(USE_HORIZONTAL==1)LCD_WR_DATA8(0xC8);
-	else if(USE_HORIZONTAL==2)LCD_WR_DATA8(0x78);
-	else LCD_WR_DATA8(0xA8);
-	LCD_WR_REG(0xB1);
-	LCD_WR_DATA8(0x00);
-	LCD_WR_DATA8(0x12);
-	LCD_WR_REG(0xB6); // Display Function Control
-	LCD_WR_DATA8(0x0A);
-	LCD_WR_DATA8(0xA2);
-
-	LCD_WR_REG(0x44);
-	LCD_WR_DATA8(0x02);
-
-	LCD_WR_REG(0xF2); // 3Gamma Function Disable
-	LCD_WR_DATA8(0x00);
-	LCD_WR_REG(0x26); //Gamma curve selected
-	LCD_WR_DATA8(0x01);
-	LCD_WR_REG(0xE0); //Set Gamma
-	LCD_WR_DATA8(0x0F);
-	LCD_WR_DATA8(0x22);
-	LCD_WR_DATA8(0x1C);
-	LCD_WR_DATA8(0x1B);
-	LCD_WR_DATA8(0x08);
-	LCD_WR_DATA8(0x0F);
-	LCD_WR_DATA8(0x48);
-	LCD_WR_DATA8(0xB8);
-	LCD_WR_DATA8(0x34);
-	LCD_WR_DATA8(0x05);
-	LCD_WR_DATA8(0x0C);
-	LCD_WR_DATA8(0x09);
-	LCD_WR_DATA8(0x0F);
-	LCD_WR_DATA8(0x07);
-	LCD_WR_DATA8(0x00);
-	LCD_WR_REG(0XE1); //Set Gamma
-	LCD_WR_DATA8(0x00);
-	LCD_WR_DATA8(0x23);
-	LCD_WR_DATA8(0x24);
-	LCD_WR_DATA8(0x07);
-	LCD_WR_DATA8(0x10);
-	LCD_WR_DATA8(0x07);
-	LCD_WR_DATA8(0x38);
-	LCD_WR_DATA8(0x47);
-	LCD_WR_DATA8(0x4B);
-	LCD_WR_DATA8(0x0A);
-	LCD_WR_DATA8(0x13);
-	LCD_WR_DATA8(0x06);
-	LCD_WR_DATA8(0x30);
-	LCD_WR_DATA8(0x38);
-	LCD_WR_DATA8(0x0F);
-	LCD_WR_REG(0x29); //Display on
-}
-
-void LCD_SetArea(unsigned int stx,unsigned int sty,unsigned int endx,unsigned int endy)
-{
-	LCD_CD_REG(0x2A);  
-	LCD_CD_DATA(stx>>8);    
-	LCD_CD_DATA(stx&0xff);    	
-	LCD_CD_DATA(endx>>8); 
-	LCD_CD_DATA(endx&0xff);	
-
-	LCD_CD_REG(0x2B);
-	LCD_CD_DATA(sty>>8); 
-	LCD_CD_DATA(sty&0xff);	
-	LCD_CD_DATA(endy>>8); 
-	LCD_CD_DATA(endy&0xff);	
-}
-
-void LcdWirteColorData(unsigned int color)
-{
-	LCD_CS=0;
-	LCD_CD=1;
-	SPI_RW(color>>8);
-	SPI_RW(color);
-	LCD_CS=1;
-}
-
-void LCD_Clear(unsigned int color)
-{  
-	unsigned int i,j;
-
-	LCD_SetArea(0,0,239,319);
-  LCD_CD_REG(0x2C);
-	for(i=0;i<320;i++)
-	{
-		for(j=0;j<240;j++)
-		{
-			LcdWirteColorData(color);
-		}
-	}
-}
 sbit X0 = P2 ^ 3;
 sbit X1 = P2 ^ 1;
 sbit X2 = P3 ^ 7;
@@ -402,18 +202,18 @@ void main()
 	// printf("123testruning");
 	// printf("xxxx");
 
-	LCD_Fill(0,0,LCD_W,LCD_H,WHITE);
+	LCD_Fill(0,0,LCD_W,LCD_H,BLUE);
 	delay_ms(100);
 	while(1)
 	{
 
-		LCD_ShowChinese(0,0,"中景园电子",RED,WHITE,32,0);
-		LCD_ShowString(0,40,"LCD_W:",RED,WHITE,16,0);
+		// LCD_ShowChinese(0,0,"中景园电子",RED,WHITE,32,0);
+		// LCD_ShowString(0,40,"LCD_W:",RED,WHITE,16,0);
 		LCD_ShowIntNum(48,40,LCD_W,3,RED,WHITE,16);
 		LCD_ShowString(80,40,"LCD_H:",RED,WHITE,16,0);
-		LCD_ShowIntNum(128,40,LCD_H,3,RED,WHITE,16);
-		LCD_ShowString(80,40,"LCD_H:",RED,WHITE,16,0);
-		LCD_ShowString(0,70,"Increaseing Nun:",RED,WHITE,16,0);
+		// LCD_ShowIntNum(128,40,LCD_H,3,RED,WHITE,16);
+		// LCD_ShowString(80,40,"LCD_H:",RED,WHITE,16,0);
+		// LCD_ShowString(0,70,"Increaseing Nun:",RED,WHITE,16,0);
 		delay_ms(300);
 		// LCD_ShowString(0,40,"LCD_W:",RED,WHITE,16,0);
 		// shurulvbo();

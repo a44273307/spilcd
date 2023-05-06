@@ -1,11 +1,29 @@
 #ifndef __LCD_H
-#define __LCD_H		
+#define __LCD_H	
 #include "STC8G.h"
+#define DATA_H P2
+#define DATA_L P0
+
+////sbit LCD_MOSI = P1^4;
+////sbit LCD_MISO = P1^3;
+//sbit LCD_SCK = P1^5;//就是TFT上的LCD_RS引脚
+
+
+
+sbit LCD_LED= P1^1;
+
+sbit LCD_CS = P1^2;
+sbit LCD_CD = P1^0;//就是TFT上的LCD_WR引脚
+sbit LCD_RESET = P0^3;
+
+
+
+
 
 #define u8  unsigned char
 #define u16 unsigned int
 #define u32 unsigned long 
-	
+void LCD_Init();
 void LCD_Fill(u16 xsta,u16 ysta,u16 xend,u16 yend,u16 color);//指定区域填充颜色
 void LCD_DrawPoint(u16 x,u16 y,u16 color);//在指定位置画一个点
 void LCD_DrawLine(u16 x1,u16 y1,u16 x2,u16 y2,u16 color);//在指定位置画一条线
@@ -27,6 +45,8 @@ void LCD_ShowFloatNum1(u16 x,u16 y,float num,u8 len,u16 fc,u16 bc,u8 sizey);//显
 void LCD_ShowPicture(u16 x,u16 y,u16 length,u16 width,const u8 pic[]);//显示图片
 void LCD_WR_REG(u8 dat);
 void LCD_WR_DATA8(u8 dat);
+
+void delay_ms(unsigned int ms);
 //画笔颜色
 #define WHITE         	 0xFFFF
 #define BLACK         	 0x0000	  
