@@ -1,6 +1,7 @@
 #include "STC8G.h"
 #include <intrins.h>
 #include <stdio.h>
+#include "lcd.h"
 #define u8 unsigned char
 #define FOSC 11059200UL
 #define BRT (65536 - FOSC / 9600 / 4)
@@ -95,10 +96,7 @@ void Timer0Init(void) // 2毫秒@11.0592MHz
 
 
 
-#define     RED          0XF800	  //红色
-#define     GREEN        0X07E0	  //绿色
-#define     BLUE         0X001F	  //蓝色
-#define     WHITE        0XFFFF	  //白色
+
 
 #define DATA_H P2
 #define DATA_L P0
@@ -164,105 +162,104 @@ void LCD_CD_REG(unsigned char reg)
 	SPI_RW(reg);
 	LCD_CS=1;
 }
-
+int USE_HORIZONTAL=0;
 void LCD_Init()
 {
 	LCD_RESET=0;
 	delay_ms(10);
 	LCD_RESET=1;
-	delay_ms(120);
-	LCD_CD_REG(0xCF);  
-	LCD_CD_DATA(0x00); 
-	LCD_CD_DATA(0xC1); 
-	LCD_CD_DATA(0X30); 
-	LCD_CD_REG(0xED);  
-	LCD_CD_DATA(0x64); 
-	LCD_CD_DATA(0x03); 
-	LCD_CD_DATA(0X12); 
-	LCD_CD_DATA(0X81); 
-	LCD_CD_REG(0xE8);  
-	LCD_CD_DATA(0x85); 
-	LCD_CD_DATA(0x10); 
-	LCD_CD_DATA(0x7A); 
-	LCD_CD_REG(0xCB);  
-	LCD_CD_DATA(0x39); 
-	LCD_CD_DATA(0x2C); 
-	LCD_CD_DATA(0x00); 
-	LCD_CD_DATA(0x34); 
-	LCD_CD_DATA(0x02); 
-	LCD_CD_REG(0xF7);  
-	LCD_CD_DATA(0x20); 
-	LCD_CD_REG(0xEA);  
-	LCD_CD_DATA(0x00); 
-	LCD_CD_DATA(0x00); 
-	LCD_CD_REG(0xC0);    //Power control 
-	LCD_CD_DATA(0x1B);   //VRH[5:0] 
-	LCD_CD_REG(0xC1);    //Power control 
-	LCD_CD_DATA(0x01);   //SAP[2:0];BT[3:0] 
-	LCD_CD_REG(0xC5);    //VCM control 
-	LCD_CD_DATA(0x30); 	 //3F
-	LCD_CD_DATA(0x30); 	 //3C
-	LCD_CD_REG(0xC7);    //VCM control2 
-	LCD_CD_DATA(0XB7); 
-	LCD_CD_REG(0x36);    // Memory Access Control 
-	LCD_CD_DATA(0x48); 
-	LCD_CD_REG(0x3A);   
-	LCD_CD_DATA(0x55); 
-	LCD_CD_REG(0xB1);   
-	LCD_CD_DATA(0x00);   
-	LCD_CD_DATA(0x1A); 
-	LCD_CD_REG(0xB6);    // Display Function Control 
-	LCD_CD_DATA(0x0A); 
-	LCD_CD_DATA(0xA2); 
-	LCD_CD_REG(0xF2);    // 3Gamma Function Disable 
-	LCD_CD_DATA(0x00); 
-	LCD_CD_REG(0x26);    //Gamma curve selected 
-	LCD_CD_DATA(0x01); 
-	LCD_CD_REG(0xE0);    //Set Gamma 
-	LCD_CD_DATA(0x0F); 
-	LCD_CD_DATA(0x2A); 
-	LCD_CD_DATA(0x28); 
-	LCD_CD_DATA(0x08); 
-	LCD_CD_DATA(0x0E); 
-	LCD_CD_DATA(0x08); 
-	LCD_CD_DATA(0x54); 
-	LCD_CD_DATA(0XA9); 
-	LCD_CD_DATA(0x43); 
-	LCD_CD_DATA(0x0A); 
-	LCD_CD_DATA(0x0F); 
-	LCD_CD_DATA(0x00); 
-	LCD_CD_DATA(0x00); 
-	LCD_CD_DATA(0x00); 
-	LCD_CD_DATA(0x00); 		 
-	LCD_CD_REG(0XE1);    //Set Gamma 
-	LCD_CD_DATA(0x00); 
-	LCD_CD_DATA(0x15); 
-	LCD_CD_DATA(0x17); 
-	LCD_CD_DATA(0x07); 
-	LCD_CD_DATA(0x11); 
-	LCD_CD_DATA(0x06); 
-	LCD_CD_DATA(0x2B); 
-	LCD_CD_DATA(0x56); 
-	LCD_CD_DATA(0x3C); 
-	LCD_CD_DATA(0x05); 
-	LCD_CD_DATA(0x10); 
-	LCD_CD_DATA(0x0F); 
-	LCD_CD_DATA(0x3F); 
-	LCD_CD_DATA(0x3F); 
-	LCD_CD_DATA(0x0F); 
-	LCD_CD_REG(0x2B); 
-	LCD_CD_DATA(0x00);
-	LCD_CD_DATA(0x00);
-	LCD_CD_DATA(0x01);
-	LCD_CD_DATA(0x3f);
-	LCD_CD_REG(0x2A); 
-	LCD_CD_DATA(0x00);
-	LCD_CD_DATA(0x00);
-	LCD_CD_DATA(0x00);
-	LCD_CD_DATA(0xef);	 
-	LCD_CD_REG(0x11); //Exit Sleep
-	delay_ms(120);
-	LCD_CD_REG(0x29); //display on	
+
+
+	LCD_WR_REG(0x11); //Sleep out 
+	delay_ms(120);              //Delay 120ms 
+	//************* Start Initial Sequence **********// 
+	LCD_WR_REG(0xCF);
+	LCD_WR_DATA8(0x00);
+	LCD_WR_DATA8(0xC1);
+	LCD_WR_DATA8(0X30);
+	LCD_WR_REG(0xED);
+	LCD_WR_DATA8(0x64);
+	LCD_WR_DATA8(0x03);
+	LCD_WR_DATA8(0X12);
+	LCD_WR_DATA8(0X81);
+	LCD_WR_REG(0xE8);
+	LCD_WR_DATA8(0x85);
+	LCD_WR_DATA8(0x00);
+	LCD_WR_DATA8(0x79);
+	LCD_WR_REG(0xCB);
+	LCD_WR_DATA8(0x39);
+	LCD_WR_DATA8(0x2C);
+	LCD_WR_DATA8(0x00);
+	LCD_WR_DATA8(0x34);
+	LCD_WR_DATA8(0x02);
+	LCD_WR_REG(0xF7);
+	LCD_WR_DATA8(0x20);
+	LCD_WR_REG(0xEA);
+	LCD_WR_DATA8(0x00);
+	LCD_WR_DATA8(0x00);
+	LCD_WR_REG(0xC0); //Power control
+	LCD_WR_DATA8(0x1D); //VRH[5:0]
+	LCD_WR_REG(0xC1); //Power control
+	LCD_WR_DATA8(0x12); //SAP[2:0];BT[3:0]
+	LCD_WR_REG(0xC5); //VCM control
+	LCD_WR_DATA8(0x33);
+	LCD_WR_DATA8(0x3F);
+	LCD_WR_REG(0xC7); //VCM control
+	LCD_WR_DATA8(0x92);
+	LCD_WR_REG(0x3A); // Memory Access Control
+	LCD_WR_DATA8(0x55);
+	LCD_WR_REG(0x36); // Memory Access Control
+	if(USE_HORIZONTAL==0)LCD_WR_DATA8(0x08);
+	else if(USE_HORIZONTAL==1)LCD_WR_DATA8(0xC8);
+	else if(USE_HORIZONTAL==2)LCD_WR_DATA8(0x78);
+	else LCD_WR_DATA8(0xA8);
+	LCD_WR_REG(0xB1);
+	LCD_WR_DATA8(0x00);
+	LCD_WR_DATA8(0x12);
+	LCD_WR_REG(0xB6); // Display Function Control
+	LCD_WR_DATA8(0x0A);
+	LCD_WR_DATA8(0xA2);
+
+	LCD_WR_REG(0x44);
+	LCD_WR_DATA8(0x02);
+
+	LCD_WR_REG(0xF2); // 3Gamma Function Disable
+	LCD_WR_DATA8(0x00);
+	LCD_WR_REG(0x26); //Gamma curve selected
+	LCD_WR_DATA8(0x01);
+	LCD_WR_REG(0xE0); //Set Gamma
+	LCD_WR_DATA8(0x0F);
+	LCD_WR_DATA8(0x22);
+	LCD_WR_DATA8(0x1C);
+	LCD_WR_DATA8(0x1B);
+	LCD_WR_DATA8(0x08);
+	LCD_WR_DATA8(0x0F);
+	LCD_WR_DATA8(0x48);
+	LCD_WR_DATA8(0xB8);
+	LCD_WR_DATA8(0x34);
+	LCD_WR_DATA8(0x05);
+	LCD_WR_DATA8(0x0C);
+	LCD_WR_DATA8(0x09);
+	LCD_WR_DATA8(0x0F);
+	LCD_WR_DATA8(0x07);
+	LCD_WR_DATA8(0x00);
+	LCD_WR_REG(0XE1); //Set Gamma
+	LCD_WR_DATA8(0x00);
+	LCD_WR_DATA8(0x23);
+	LCD_WR_DATA8(0x24);
+	LCD_WR_DATA8(0x07);
+	LCD_WR_DATA8(0x10);
+	LCD_WR_DATA8(0x07);
+	LCD_WR_DATA8(0x38);
+	LCD_WR_DATA8(0x47);
+	LCD_WR_DATA8(0x4B);
+	LCD_WR_DATA8(0x0A);
+	LCD_WR_DATA8(0x13);
+	LCD_WR_DATA8(0x06);
+	LCD_WR_DATA8(0x30);
+	LCD_WR_DATA8(0x38);
+	LCD_WR_DATA8(0x0F);
+	LCD_WR_REG(0x29); //Display on
 }
 
 void LCD_SetArea(unsigned int stx,unsigned int sty,unsigned int endx,unsigned int endy)
@@ -373,7 +370,8 @@ void keyallchuli()
 			flag[i]=0;
 	}
 }
-
+#define LCD_W 240
+#define LCD_H 320
 
 void main()
 {
@@ -397,26 +395,39 @@ void main()
 	
 //	SPI_Init();
 	LCD_Init();
-	UartInit();
+	// UartInit();
 
-	Timer0Init();
-	delay_ms(300);
+	// Timer0Init();
+	delay_ms(100);
 	// printf("123testruning");
 	// printf("xxxx");
+
+	LCD_Fill(0,0,LCD_W,LCD_H,WHITE);
+	delay_ms(100);
 	while(1)
 	{
-		shurulvbo();
-		keyallchuli();
-		delay_ms(2);
-		LCD_Clear(WHITE);
+
+		LCD_ShowChinese(0,0,"中景园电子",RED,WHITE,32,0);
+		LCD_ShowString(0,40,"LCD_W:",RED,WHITE,16,0);
+		LCD_ShowIntNum(48,40,LCD_W,3,RED,WHITE,16);
+		LCD_ShowString(80,40,"LCD_H:",RED,WHITE,16,0);
+		LCD_ShowIntNum(128,40,LCD_H,3,RED,WHITE,16);
+		LCD_ShowString(80,40,"LCD_H:",RED,WHITE,16,0);
+		LCD_ShowString(0,70,"Increaseing Nun:",RED,WHITE,16,0);
 		delay_ms(300);
-		LCD_Clear(RED);
-		delay_ms(300);
-		LCD_Clear(BLUE);
-		delay_ms(300);
-		LCD_Clear(GREEN);
-		delay_ms(300);
-		UartSendStr("123testruning");
+		// LCD_ShowString(0,40,"LCD_W:",RED,WHITE,16,0);
+		// shurulvbo();
+		// keyallchuli();
+		// delay_ms(2);
+		// LCD_Clear(WHITE);
+		// delay_ms(300);
+		// LCD_Clear(RED);
+		// delay_ms(300);
+		// LCD_Clear(BLUE);
+		// delay_ms(300);
+		// LCD_Clear(GREEN);
+		// delay_ms(300);
+		// UartSendStr("123testruning");
 	}
 }
 

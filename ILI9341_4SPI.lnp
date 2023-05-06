@@ -1,3 +1,4 @@
 "STARTUP.obj",
-"main.obj" 
+"main.obj",
+"lcd.obj" 
 TO "ILI9341_4SPI" 
