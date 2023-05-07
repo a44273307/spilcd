@@ -6,6 +6,18 @@
 #define u8 unsigned char
 #define FOSC 11059200UL
 #define BRT (65536 - FOSC / 9600 / 4)
+
+int keyon= 0;
+int keylow=1;
+int keyok= 2;
+int keyup=3;
+
+int nowzhi=1000;
+int setzhi=500;
+#define maxsetzhi 1000 
+
+
+
 bit busy;
 void UartInit() // 11.0592 9600
 {
@@ -37,7 +49,7 @@ char putchar (char dat)
 	while (TI == 0)
 		;
 	TI = 0;
-	return (SBUF = dat);
+	return (dat);
 }
 
 void UartSendStr(u8 *str)
@@ -107,6 +119,7 @@ sbit X2 = P3 ^ 7;
 sbit X3 = P3 ^ 5;
 
 
+
 sbit LED0 = P3 ^ 4;
 char xin[30]={0};
 void shurulvbo(void)
@@ -145,6 +158,19 @@ void shurulvbo(void)
 		}
 	}
 }
+void setzhichange(int a)
+{
+	if(setzhi+a<0)
+	{
+		return ;
+	}
+	if(setzhi+a>maxsetzhi)
+	{
+		return; 
+	}
+	setzhi=setzhi+a;
+}
+
 void keydown(int i) // 按键按下的处理、、、
 {
 	printf("keydown %d\r\n", i);
@@ -152,11 +178,66 @@ void keydown(int i) // 按键按下的处理、、、
 	{
 		LED0=~LED0;
 	}
+	if(i==keylow)
+	{
+		setzhichange(-1);
+		return;
+	}
+	if(i==keyup)
+	{
+		setzhichange(1);
+		return;
+	}
+	if(i==keyok)
+	{
+		nowzhi=setzhi;
+		printf("setdianliu%d\r\n",nowzhi);
+	}
+}
+// 按键连续按下多少次的操作。。
+int setbizhi(int times)
+{
+	if(times<100)
+	{
+		return 1;
+	}
+	if(times<1000)
+	{
+		return 10;
+	}
+	return 50  ;
+}
+// 2ms 一次的话，那300ms一次ok的吧。。
+void dolongtimes(int i,int times)
+{
+	int xielv;
+	times=times-300;
+	if(times<0)
+	{
+		return ;
+	}
+	xielv=setbizhi(times);
+	if(times%150!=0)
+	{
+		return;
+	}
+	printf("dolongtimes %d xielv %d\r\n", i,xielv);
+	if(i==keylow)
+	{
+		setzhichange(-xielv);
+		return;
+	}
+	if(i==keyup)
+	{
+		setzhichange(xielv);
+		return;
+	}
 }
 void keyallchuli()
 {
 	int i;
-	static int flag[10]={0};//标志记录
+	static char flag[10]={0};//标志记录
+	static int dowmtimes[10]={0};//标志记录
 	for( i=0;i<6;i++)
 	{
 		if(xin[i]==0)
@@ -166,25 +247,42 @@ void keyallchuli()
 				flag[i]=1;
 				keydown(i);
 			}
+			dowmtimes[i]++;
+			dolongtimes(i,dowmtimes[i]);
 		}
 		else 
+		{
 			flag[i]=0;
+			dowmtimes[i]=0;
+		}
 	}
 }
 
 
-int times=1;
-void showdata()
+
+
+void shownow()
 {
-	int i;
 	char dataxx[40];
-	times=times+1;
-	sprintf(dataxx,"LCD_W:%d",times);
+	sprintf(dataxx,"NOW:%05d",nowzhi);
 	LCD_ShowString(0,40,dataxx,RED,WHITE,32,0);
 }
+void showsetzhi()
+{
+	char dataxx[40];
+	sprintf(dataxx,"SET:%05d",setzhi);
+	LCD_ShowString(0,80,dataxx,RED,WHITE,32,0);
+}
+void showdata()
+{
+	shownow();
+	showsetzhi();
+}
+
 void main()
 {
-	  P0M0 = 0x00;
+	int i=0;
+	P0M0 = 0x00;
     P0M1 = 0x02;
     P1M0 = 0x00;
     P1M1 = 0x00;
@@ -202,41 +300,30 @@ void main()
 	LCD_LED=0;
 	delay_ms(100);
 	
-//	SPI_Init();
 	LCD_Init();
-	// UartInit();
+	UartInit();
 
-	// Timer0Init();
+	Timer0Init();
 	delay_ms(100);
-	// printf("123testruning");
-	// printf("xxxx");
+
 
 	LCD_Fill(0,0,320,240,WHITE);
 	delay_ms(100);
 	while(1)
 	{
-        showdata();
-		// LCD_ShowChinese(0,0,"中景园电子",RED,WHITE,32,0);
-		// LCD_ShowString(0,40,"LCD_W:",RED,WHITE,32,0);
-		// LCD_ShowIntNum(48,40,LCD_W,3,RED,WHITE,16);
-		// LCD_ShowString(80,40,"LCD_H:",RED,WHITE,16,0);
-		// LCD_ShowIntNum(128,40,LCD_H,3,RED,WHITE,16);
-		// LCD_ShowString(80,40,"LCD_H:",RED,WHITE,32,0);
-		// LCD_ShowString(0,70,"Increaseing Nun:",RED,WHITE,16,0);
-		delay_ms(300);
-		// LCD_ShowString(0,40,"LCD_W:",RED,WHITE,16,0);
-		// shurulvbo();
-		// keyallchuli();
-		// delay_ms(2);
-		// LCD_Clear(WHITE);
-		// delay_ms(300);
-		// LCD_Clear(RED);
-		// delay_ms(300);
-		// LCD_Clear(BLUE);
-		// delay_ms(300);
-		// LCD_Clear(GREEN);
-		// delay_ms(300);
-		// UartSendStr("123testruning");
+		shurulvbo();
+	    keyallchuli();
+       
+		// printf("123testruning");
+		// printf("xxxx");
+		delay_ms(1);
+		if(i++>100)
+		{
+			i=0;
+			showdata();
+		}
+	
+		
 	}
 }
 

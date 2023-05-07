@@ -29,8 +29,8 @@ void Delay1ms()		//@12.000MHz
 {
 	unsigned char i, j;
 
-	i = 12;
-	j = 169;
+	i = 15;
+	j = 90;
 	do
 	{
 		while (--j);
