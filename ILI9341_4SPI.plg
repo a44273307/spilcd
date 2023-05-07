@@ -448,3 +448,271 @@ linking...
 Program Size: data=15.2 xdata=317 code=21007
 creating hex file from "ILI9341_4SPI"...
 "ILI9341_4SPI" - 0 Error(s), 14 Warning(s).
+Build target 'Target 1'
+compiling main.c...
+main.c(178): error C141: syntax error near '['
+main.c(178): error C141: syntax error near ']'
+main.c(179): error C141: syntax error near 'static'
+main.c(179): error C202: 'times': undefined identifier
+main.c(180): error C202: 'times': undefined identifier
+main.c(181): error C141: syntax error near 'data'
+Target not created
+Build target 'Target 1'
+compiling main.c...
+main.c(217): warning C206: 'showdata': missing function-prototype
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?UARTINIT?MAIN
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_UARTSENDSTR?MAIN
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?UART2INIT?MAIN
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_UART2SENDSTR?MAIN
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER0INIT?MAIN
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?SHURULVBO?MAIN
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?KEYALLCHULI?MAIN
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_LCD_CLEAR?LCD
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_LCD_WR_REG?LCD
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_LCD_DRAWRECTANGLE?LCD
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_DRAW_CIRCLE?LCD
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_LCD_SHOWSTRING?LCD
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_LCD_SHOWINTNUM?LCD
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_LCD_SHOWFLOATNUM1?LCD
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_LCD_SHOWPICTURE?LCD
+*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
+    SYMBOL:  SHOWDATA
+    MODULE:  main.obj (MAIN)
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  SHOWDATA
+    MODULE:  main.obj (MAIN)
+    ADDRESS: 4F0CH
+Program Size: data=15.2 xdata=329 code=20923
+creating hex file from "ILI9341_4SPI"...
+"ILI9341_4SPI" - 0 Error(s), 18 Warning(s).
+Build target 'Target 1'
+compiling main.c...
+main.c(178): error C141: syntax error near '['
+main.c(178): error C141: syntax error near ']'
+main.c(179): error C141: syntax error near 'static'
+main.c(179): error C202: 'times': undefined identifier
+main.c(180): error C202: 'times': undefined identifier
+main.c(181): error C141: syntax error near 'data'
+Target not created
+Build target 'Target 1'
+compiling main.c...
+main.c(178): error C141: syntax error near '['
+main.c(178): error C141: syntax error near ']'
+main.c(179): error C141: syntax error near 'static'
+main.c(179): error C202: 'times': undefined identifier
+main.c(180): error C202: 'times': undefined identifier
+main.c(181): error C141: syntax error near 'data'
+Target not created
+Build target 'Target 1'
+compiling main.c...
+main.c(178): error C141: syntax error near '['
+main.c(178): error C141: syntax error near ']'
+main.c(178): error C141: syntax error near '}'
+main.c(179): error C141: syntax error near 'static'
+main.c(179): error C202: 'times': undefined identifier
+main.c(180): error C202: 'times': undefined identifier
+main.c(181): error C141: syntax error near 'data'
+Target not created
+Build target 'Target 1'
+compiling main.c...
+main.c(179): error C141: syntax error near '['
+main.c(179): error C141: syntax error near ']'
+main.c(179): error C141: syntax error near '}'
+main.c(181): error C141: syntax error near 'data'
+Target not created
+Build target 'Target 1'
+compiling main.c...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?UARTINIT?MAIN
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_UARTSENDSTR?MAIN
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?UART2INIT?MAIN
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_UART2SENDSTR?MAIN
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER0INIT?MAIN
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?SHURULVBO?MAIN
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?KEYALLCHULI?MAIN
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_LCD_CLEAR?LCD
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_LCD_WR_REG?LCD
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_LCD_DRAWRECTANGLE?LCD
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_DRAW_CIRCLE?LCD
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_LCD_SHOWSTRING?LCD
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_LCD_SHOWINTNUM?LCD
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_LCD_SHOWFLOATNUM1?LCD
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_LCD_SHOWPICTURE?LCD
+Program Size: data=15.2 xdata=331 code=20929
+creating hex file from "ILI9341_4SPI"...
+"ILI9341_4SPI" - 0 Error(s), 15 Warning(s).
+Build target 'Target 1'
+compiling main.c...
+main.c(179): error C141: syntax error near '['
+main.c(179): error C141: syntax error near ']'
+main.c(179): error C141: syntax error near '}'
+main.c(182): error C141: syntax error near 'data'
+Target not created
+Build target 'Target 1'
+compiling main.c...
+main.c(179): error C141: syntax error near '['
+main.c(179): error C141: syntax error near ']'
+main.c(179): error C141: syntax error near '}'
+Target not created
+Build target 'Target 1'
+compiling main.c...
+main.c(179): error C141: syntax error near '['
+main.c(179): error C141: syntax error near ']'
+main.c(179): error C141: syntax error near '}'
+Target not created
+Build target 'Target 1'
+compiling main.c...
+main.c(179): error C141: syntax error near '['
+main.c(179): error C141: syntax error near ']'
+Target not created
+Build target 'Target 1'
+compiling main.c...
+main.c(177): error C141: syntax error near '['
+Target not created
+Build target 'Target 1'
+compiling main.c...
+main.c(180): error C141: syntax error near '['
+main.c(180): error C141: syntax error near ']'
+Target not created
+Build target 'Target 1'
+compiling main.c...
+main.c(179): error C141: syntax error near '['
+main.c(179): error C141: syntax error near ']'
+main.c(213): error C202: 'LCD_W': undefined identifier
+Target not created
+Build target 'Target 1'
+compiling main.c...
+main.c(177): error C141: syntax error near '['
+main.c(177): error C141: syntax error near ']'
+main.c(211): error C202: 'LCD_W': undefined identifier
+Target not created
+Build target 'Target 1'
+compiling main.c...
+main.c(177): error C141: syntax error near '['
+main.c(177): error C141: syntax error near ']'
+main.c(211): error C202: 'LCD_W': undefined identifier
+Target not created
+Build target 'Target 1'
+compiling main.c...
+main.c(177): error C141: syntax error near '['
+main.c(177): error C141: syntax error near ']'
+main.c(211): error C202: 'LCD_W': undefined identifier
+Target not created
+Build target 'Target 1'
+compiling main.c...
+main.c(179): error C141: syntax error near '['
+main.c(179): error C141: syntax error near ']'
+Target not created
+Build target 'Target 1'
+compiling main.c...
+main.c(179): warning C280: 'i': unreferenced local variable
+main.c(180): warning C280: 'dataxx': unreferenced local variable
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?UARTINIT?MAIN
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_UARTSENDSTR?MAIN
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?UART2INIT?MAIN
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_UART2SENDSTR?MAIN
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER0INIT?MAIN
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?SHURULVBO?MAIN
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?KEYALLCHULI?MAIN
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_LCD_CLEAR?LCD
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_LCD_WR_REG?LCD
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_LCD_DRAWRECTANGLE?LCD
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_DRAW_CIRCLE?LCD
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_LCD_SHOWSTRING?LCD
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_LCD_SHOWINTNUM?LCD
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_LCD_SHOWFLOATNUM1?LCD
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_LCD_SHOWPICTURE?LCD
+Program Size: data=15.2 xdata=345 code=20942
+creating hex file from "ILI9341_4SPI"...
+"ILI9341_4SPI" - 0 Error(s), 17 Warning(s).
+Build target 'Target 1'
+compiling main.c...
+main.c(183): error C141: syntax error near 'data'
+Target not created
+Build target 'Target 1'
+compiling main.c...
+main.c(183): error C141: syntax error near 'data'
+Target not created
+compiling main.c...
+main.c(179): warning C280: 'i': unreferenced local variable
+main.c - 0 Error(s), 1 Warning(s).
+Build target 'Target 1'
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?UARTINIT?MAIN
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_UARTSENDSTR?MAIN
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?UART2INIT?MAIN
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_UART2SENDSTR?MAIN
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER0INIT?MAIN
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?SHURULVBO?MAIN
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?KEYALLCHULI?MAIN
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_LCD_CLEAR?LCD
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_LCD_WR_REG?LCD
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_LCD_DRAWRECTANGLE?LCD
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_DRAW_CIRCLE?LCD
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_LCD_SHOWINTNUM?LCD
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_LCD_SHOWFLOATNUM1?LCD
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_LCD_SHOWPICTURE?LCD
+Program Size: data=15.2 xdata=313 code=21025
+creating hex file from "ILI9341_4SPI"...
+"ILI9341_4SPI" - 0 Error(s), 14 Warning(s).

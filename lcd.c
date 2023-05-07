@@ -100,7 +100,7 @@ void LCD_Init()
 	LCD_CD_REG(0xC7);    //VCM control2 
 	LCD_CD_DATA(0XB7); 
 	LCD_CD_REG(0x36);    // Memory Access Control 
-	LCD_CD_DATA(0x48); 
+	LCD_CD_DATA(0x0C+0x80+0x20); 
 	LCD_CD_REG(0x3A);   
 	LCD_CD_DATA(0x55); 
 	LCD_CD_REG(0xB1);   

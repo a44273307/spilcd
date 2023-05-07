@@ -171,12 +171,16 @@ void keyallchuli()
 			flag[i]=0;
 	}
 }
-#define LCD_W 240
-#define LCD_H 320
+
+
+int times=1;
 void showdata()
 {
-	// char data[100];
-	// sprintf(data,"")
+	int i;
+	char dataxx[40];
+	times=times+1;
+	sprintf(dataxx,"LCD_W:%d",times);
+	LCD_ShowString(0,40,dataxx,RED,WHITE,32,0);
 }
 void main()
 {
@@ -207,17 +211,17 @@ void main()
 	// printf("123testruning");
 	// printf("xxxx");
 
-	LCD_Fill(0,0,LCD_W,LCD_H,WHITE);
+	LCD_Fill(0,0,320,240,WHITE);
 	delay_ms(100);
 	while(1)
 	{
-        
+        showdata();
 		// LCD_ShowChinese(0,0,"ÖÐ¾°Ô°µç×Ó",RED,WHITE,32,0);
-		LCD_ShowString(0,40,"LCD_W:",RED,WHITE,16,0);
+		// LCD_ShowString(0,40,"LCD_W:",RED,WHITE,32,0);
 		// LCD_ShowIntNum(48,40,LCD_W,3,RED,WHITE,16);
 		// LCD_ShowString(80,40,"LCD_H:",RED,WHITE,16,0);
 		// LCD_ShowIntNum(128,40,LCD_H,3,RED,WHITE,16);
-		LCD_ShowString(80,40,"LCD_H:",RED,WHITE,16,0);
+		// LCD_ShowString(80,40,"LCD_H:",RED,WHITE,32,0);
 		// LCD_ShowString(0,70,"Increaseing Nun:",RED,WHITE,16,0);
 		delay_ms(300);
 		// LCD_ShowString(0,40,"LCD_W:",RED,WHITE,16,0);

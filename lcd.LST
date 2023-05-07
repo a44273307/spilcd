@@ -1,4 +1,4 @@
-C51 COMPILER V9.05   LCD                                                                   05/07/2023 00:02:23 PAGE 1   
+C51 COMPILER V9.05   LCD                                                                   05/07/2023 00:38:50 PAGE 1   
 
 
 C51 COMPILER V9.05, COMPILATION OF MODULE LCD
@@ -62,7 +62,7 @@ line level    source
   53   1      }
   54          
   55          void LCD_CD_REG(unsigned char reg)
-C51 COMPILER V9.05   LCD                                                                   05/07/2023 00:02:23 PAGE 2   
+C51 COMPILER V9.05   LCD                                                                   05/07/2023 00:38:50 PAGE 2   
 
   56          {
   57   1              LCD_CS=0;
@@ -111,7 +111,7 @@ line level    source
  100   1              LCD_CD_REG(0xC7);    //VCM control2 
  101   1              LCD_CD_DATA(0XB7); 
  102   1              LCD_CD_REG(0x36);    // Memory Access Control 
- 103   1              LCD_CD_DATA(0x48); 
+ 103   1              LCD_CD_DATA(0x0C+0x80+0x20); 
  104   1              LCD_CD_REG(0x3A);   
  105   1              LCD_CD_DATA(0x55); 
  106   1              LCD_CD_REG(0xB1);   
@@ -126,7 +126,7 @@ line level    source
  115   1              LCD_CD_DATA(0x01); 
  116   1              LCD_CD_REG(0xE0);    //Set Gamma 
  117   1              LCD_CD_DATA(0x0F); 
-C51 COMPILER V9.05   LCD                                                                   05/07/2023 00:02:23 PAGE 3   
+C51 COMPILER V9.05   LCD                                                                   05/07/2023 00:38:50 PAGE 3   
 
  118   1              LCD_CD_DATA(0x2A); 
  119   1              LCD_CD_DATA(0x28); 
@@ -190,7 +190,7 @@ line level    source
  177          
  178          void LcdWirteColorData(unsigned int color)
  179          {
-C51 COMPILER V9.05   LCD                                                                   05/07/2023 00:02:23 PAGE 4   
+C51 COMPILER V9.05   LCD                                                                   05/07/2023 00:38:50 PAGE 4   
 
  180   1              LCD_CS=0;
  181   1              LCD_CD=1;
@@ -254,7 +254,7 @@ line level    source
  239          void LCD_WR_DATA(u16 dat)
  240          {
  241   1              LcdWirteColorData(dat);
-C51 COMPILER V9.05   LCD                                                                   05/07/2023 00:02:23 PAGE 5   
+C51 COMPILER V9.05   LCD                                                                   05/07/2023 00:38:50 PAGE 5   
 
  242   1      }
  243          /******************************************************************************
@@ -318,7 +318,7 @@ line level    source
  301   1              {
  302   2                      LCD_DrawPoint(uRow,uCol,color);//画点
  303   2                      xerr+=delta_x;
-C51 COMPILER V9.05   LCD                                                                   05/07/2023 00:02:23 PAGE 6   
+C51 COMPILER V9.05   LCD                                                                   05/07/2023 00:38:50 PAGE 6   
 
  304   2                      yerr+=delta_y;
  305   2                      if(xerr>distance)
@@ -382,7 +382,7 @@ line level    source
  363          
  364          
  365          
-C51 COMPILER V9.05   LCD                                                                   05/07/2023 00:02:23 PAGE 7   
+C51 COMPILER V9.05   LCD                                                                   05/07/2023 00:38:50 PAGE 7   
 
  366          
  367          /******************************************************************************
@@ -446,7 +446,7 @@ line level    source
  425                入口数据：x,y显示坐标
  426                          *p 要显示的字符串
  427                          fc 字的颜色
-C51 COMPILER V9.05   LCD                                                                   05/07/2023 00:02:23 PAGE 8   
+C51 COMPILER V9.05   LCD                                                                   05/07/2023 00:38:50 PAGE 8   
 
  428                          bc 字的背景色
  429                          sizey 字号
@@ -510,7 +510,7 @@ line level    source
  487          
  488          
  489          /******************************************************************************
-C51 COMPILER V9.05   LCD                                                                   05/07/2023 00:02:23 PAGE 9   
+C51 COMPILER V9.05   LCD                                                                   05/07/2023 00:38:50 PAGE 9   
 
  490                函数说明：显示两位小数变量
  491                入口数据：x,y显示坐标
@@ -574,7 +574,7 @@ MODULE INFORMATION:   STATIC OVERLAYABLE
    XDATA SIZE       =      2     182
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----
-C51 COMPILER V9.05   LCD                                                                   05/07/2023 00:02:23 PAGE 10  
+C51 COMPILER V9.05   LCD                                                                   05/07/2023 00:38:50 PAGE 10  
 
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----
