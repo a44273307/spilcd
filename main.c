@@ -3,8 +3,14 @@
 #include <stdio.h>
 #include "lcd.h"
 #include <string.h>
+
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+
 #define u8 unsigned char
-#define FOSC 11059200UL
+#define FOSC 24000000UL
 #define BRT (65536 - FOSC / 9600 / 4)
 
 int keyon= 0;
@@ -12,29 +18,26 @@ int keylow=1;
 int keyok= 2;
 int keyup=3;
 
-int nowzhi=1000;
+int nowzhi=500;
 int setzhi=500;
-#define maxsetzhi 1000 
+#define maxsetzhi 2047 
 
 
 
 bit busy;
 void UartInit() // 11.0592 9600
 {
-	SCON = 0x50;  // 8位数据,可变波特率
-	AUXR |= 0x40; // 定时器时钟1T模式
-	AUXR &= 0xFE; // 串口1选择定时器1为波特率发生器
-	TMOD &= 0x0F; // 设置定时器模式
-	TL1 = 0xE0;	  // 设置定时初始值
-	TH1 = 0xFE;	  // 设置定时初始值
-	ET1 = 0;	  // 禁止定时器%d中断
-	TR1 = 1;	  // 定时器1开始计时
+	SCON = 0x50;		//8位数据,可变波特率
+	AUXR |= 0x40;		//定时器时钟1T模式
+	AUXR &= 0xFE;		//串口1选择定时器1为波特率发生器
+	TMOD &= 0x0F;		//设置定时器模式
+	TL1 = 0x8F;		//设置定时初始值
+	TH1 = 0xFD;		//设置定时初始值
+	ET1 = 0;		//禁止定时器%d中断
+	TR1 = 1;		//定时器1开始计时
 	ES = 1;
 	EA = 1;
 	P_SW1 = 0x00; // RXD/P3.0, TXD/P3.1
-	//  P_SW1 = 0x40;                               //RXD_2/P3.6, TXD_2/P3.7
-	//  P_SW1 = 0x80;                               //RXD_3/P1.6, TXD_3/P1.7
-	//	PS=1;
 }
 void UartSendByte(u8 dat)
 {
@@ -88,12 +91,12 @@ void Uart2SendStr(char *p)
 
 void Timer0Init(void) // 2毫秒@11.0592MHz
 {
-	AUXR |= 0x80; // 定时器时钟1T模式
-	TMOD &= 0xF0; // 设置定时器模式
-	TL0 = 0x9a;	  // 设置定时初值
-	TH0 = 0xa9;	  // 设置定时初值
-	TF0 = 0;	  // 清除TF0标志
-	TR0 = 1;	  // 定时器0开始计时
+	AUXR |= 0x80;		//定时器时钟1T模式
+	TMOD &= 0xF0;		//设置定时器模式
+	TL0 = 0x80;		//设置定时初始值
+	TH0 = 0x44;		//设置定时初始值
+	TF0 = 0;		//清除TF0标志
+	TR0 = 1;		//定时器0开始计时
 	TR0 = 1;	  // 定时器0开始计时
 	ET0 = 1;	  // 使能定时器0中断
 	PT0 = 1;
@@ -120,7 +123,19 @@ sbit X3 = P3 ^ 5;
 
 
 
-sbit LED0 = P3 ^ 4;
+sbit LED3 = P3 ^ 4;
+sbit LED2 = P3 ^ 6;
+
+sbit LED1 = P2 ^ 0;
+sbit LED0 = P2 ^ 2;
+sbit Y3 = P3 ^ 4;
+sbit Y2 = P3 ^ 6;
+
+sbit Y1 = P2 ^ 0;
+sbit Y0 = P2 ^ 2;
+
+
+
 char xin[30]={0};
 void shurulvbo(void)
 {
@@ -162,10 +177,12 @@ void setzhichange(int a)
 {
 	if(setzhi+a<0)
 	{
+		setzhi=0;
 		return ;
 	}
 	if(setzhi+a>maxsetzhi)
 	{
+		setzhi=maxsetzhi;
 		return; 
 	}
 	setzhi=setzhi+a;
@@ -233,6 +250,30 @@ void dolongtimes(int i,int times)
 		return;
 	}
 }
+void yout_set(char weizhi,char zhi)
+{
+if(weizhi==0)Y0=zhi;
+if(weizhi==1)Y1=zhi;
+if(weizhi==2)Y2=zhi;
+if(weizhi==3)Y3=zhi;
+
+}
+void ledclose(int weizhi)
+{
+	if(weizhi==keyon)
+	{
+		return ;
+	}
+	yout_set(weizhi,1);
+}
+void ledopen(int weizhi)
+{
+	if(weizhi==keyon)
+	{
+		return ;
+	}
+	yout_set(weizhi,0);
+}
 void keyallchuli()
 {
 	int i;
@@ -247,6 +288,7 @@ void keyallchuli()
 				flag[i]=1;
 				keydown(i);
 			}
+			ledopen(i);
 			dowmtimes[i]++;
 			dolongtimes(i,dowmtimes[i]);
 		}
@@ -254,12 +296,18 @@ void keyallchuli()
 		{
 			flag[i]=0;
 			dowmtimes[i]=0;
+			ledclose(i);
 		}
 	}
 }
 
-
-
+int tmp=203;// 温度值
+void shownwendu()
+{
+	char dataxx[40];
+	sprintf(dataxx,"TMP:%3d.%01d  ",tmp/10,tmp%10);
+	LCD_ShowString(0,120,dataxx,RED,WHITE,32,0);
+}
 
 void shownow()
 {
@@ -277,8 +325,9 @@ void showdata()
 {
 	shownow();
 	showsetzhi();
+	shownwendu();
 }
-
+void getwendu();
 void main()
 {
 	int i=0;
@@ -295,9 +344,10 @@ void main()
     P5M0 = 0x00;
     P5M1 = 0x00;
 	
-	 SPCTL = 0x50|0x80;                               //??SPI????
+	SPCTL = 0x50|0x80;                               //??SPI????
     SPSTAT = 0xc0;                              //?????
 	LCD_LED=0;
+	LED0=~LED0;
 	delay_ms(100);
 	
 	LCD_Init();
@@ -306,40 +356,89 @@ void main()
 	Timer0Init();
 	delay_ms(100);
 
-
 	LCD_Fill(0,0,320,240,WHITE);
 	delay_ms(100);
+	
 	while(1)
 	{
 		shurulvbo();
 	    keyallchuli();
-       
-		// printf("123testruning");
-		// printf("xxxx");
+        
 		delay_ms(1);
 		if(i++>100)
 		{
 			i=0;
+			getwendu();
 			showdata();
 		}
-	
-		
+	}
+}
+int weishu1, weishu2, weishu3, weishu4;
+char buf1[100];
+int timeleft1, timeleft2, timeleft3, timeleft4;
+void chuankou1put(char c)
+{
+	buf1[weishu1++] = c;
+	if (weishu1 > 80)
+		weishu1 = 0;
+	timeleft1 = 10;
+}
+// 写个通用的，懒得去改后面的了。先偷懒了。。。
+void getwendufromrsp(char *p)
+{
+	char* index;
+	int ans;
+	index=strstr(p,"getwendu");
+	if(index==0)
+	{
+		return  ;
+	}
+	ans=atoi(index+strlen("getwendu"));
+	if(ans==-1)
+	{
+		return;
+	}
+	tmp=ans;
+}
+void chuankou1jisuan()
+{
+	getwendufromrsp(buf1);
+	memset(buf1, 0, sizeof(buf1));
+	weishu1 = 0;
+}
+void chuankou1time()
+{
+	if (timeleft1 > 0)
+	{
+		timeleft1--;
+		if (timeleft1 == 0) // 数据一次收完了.
+		{
+			chuankou1jisuan();
+		}
 	}
 }
 
-
+// 采用中断和处理分开的方式吧，方便调试。。
+void getwendu()
+{
+	delay_ms(10);
+	printf("getwendu");
+	delay_ms(40);
+	// getwendufromrsp()
+}
 void UartIsr() interrupt 4
 {
 
 	if (RI)
 	{
 		RI = 0;
+		chuankou1put(SBUF);
 	}
 }
 
 void tm0_isr() interrupt 1
 {
-	
+	chuankou1time();
 }
 
 

@@ -1,9 +1,9 @@
 #include "lcd.h"
 
 #include "lcdfont.h"
+#include	  <intrins.h>
 
-
-
+		 
 
 
 void SPI_RW(unsigned char byte)
@@ -25,12 +25,13 @@ void SPI_RW(unsigned char byte)
 }
 
 
-void Delay1ms()		//@12.000MHz
+void Delay1ms()		//@24.000MHz
 {
 	unsigned char i, j;
 
-	i = 15;
-	j = 90;
+	_nop_();
+	i = 32;
+	j = 40;
 	do
 	{
 		while (--j);
