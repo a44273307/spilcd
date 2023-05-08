@@ -7,7 +7,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-
+#include "pic.h"
 
 #define u8 unsigned char
 #define FOSC 24000000UL
@@ -328,6 +328,17 @@ void showdata()
 	shownwendu();
 }
 void getwendu();
+void showpic()
+{
+	u8 i,j;
+	for(j=0;j<5;j++)
+		{
+			for(i=0;i<6;i++)
+			{
+				LCD_ShowPicture(40*i,120+j*40,40,40,gImage_1);
+			}
+		}
+}
 void main()
 {
 	int i=0;
@@ -357,12 +368,19 @@ void main()
 	delay_ms(100);
 
 	LCD_Fill(0,0,320,240,WHITE);
-	delay_ms(100);
+	printf("system begin\r\n");
+	while(1)
+	{
+		printf("xxx\r\n");
+		delay_ms(100);
+		showdata();
+		showpic();
+	}
 	
 	while(1)
 	{
-		shurulvbo();
-	    keyallchuli();
+		// shurulvbo();
+	    // keyallchuli();
         
 		delay_ms(1);
 		if(i++>100)
@@ -370,6 +388,7 @@ void main()
 			i=0;
 			getwendu();
 			showdata();
+			showpic();
 		}
 	}
 }

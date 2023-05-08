@@ -1,4 +1,4 @@
-C51 COMPILER V9.05   LCD                                                                   05/07/2023 14:10:18 PAGE 1   
+C51 COMPILER V9.05   LCD                                                                   05/09/2023 00:59:06 PAGE 1   
 
 
 C51 COMPILER V9.05, COMPILATION OF MODULE LCD
@@ -62,7 +62,7 @@ line level    source
   53   1              LCD_CS=1;
   54   1      }
   55          
-C51 COMPILER V9.05   LCD                                                                   05/07/2023 14:10:18 PAGE 2   
+C51 COMPILER V9.05   LCD                                                                   05/09/2023 00:59:06 PAGE 2   
 
   56          void LCD_CD_REG(unsigned char reg)
   57          {
@@ -126,7 +126,7 @@ line level    source
  115   1              LCD_CD_REG(0x26);    //Gamma curve selected 
  116   1              LCD_CD_DATA(0x01); 
  117   1              LCD_CD_REG(0xE0);    //Set Gamma 
-C51 COMPILER V9.05   LCD                                                                   05/07/2023 14:10:18 PAGE 3   
+C51 COMPILER V9.05   LCD                                                                   05/09/2023 00:59:06 PAGE 3   
 
  118   1              LCD_CD_DATA(0x0F); 
  119   1              LCD_CD_DATA(0x2A); 
@@ -190,7 +190,7 @@ line level    source
  177   1      }
  178          
  179          void LcdWirteColorData(unsigned int color)
-C51 COMPILER V9.05   LCD                                                                   05/07/2023 14:10:18 PAGE 4   
+C51 COMPILER V9.05   LCD                                                                   05/09/2023 00:59:06 PAGE 4   
 
  180          {
  181   1              LCD_CS=0;
@@ -254,7 +254,7 @@ line level    source
  239          ******************************************************************************/
  240          void LCD_WR_DATA(u16 dat)
  241          {
-C51 COMPILER V9.05   LCD                                                                   05/07/2023 14:10:18 PAGE 5   
+C51 COMPILER V9.05   LCD                                                                   05/09/2023 00:59:06 PAGE 5   
 
  242   1              LcdWirteColorData(dat);
  243   1      }
@@ -318,7 +318,7 @@ line level    source
  301   1              for(t=0;t<distance+1;t++)
  302   1              {
  303   2                      LCD_DrawPoint(uRow,uCol,color);//画点
-C51 COMPILER V9.05   LCD                                                                   05/07/2023 14:10:18 PAGE 6   
+C51 COMPILER V9.05   LCD                                                                   05/09/2023 00:59:06 PAGE 6   
 
  304   2                      xerr+=delta_x;
  305   2                      yerr+=delta_y;
@@ -382,7 +382,7 @@ line level    source
  363   1      }
  364          
  365          
-C51 COMPILER V9.05   LCD                                                                   05/07/2023 14:10:18 PAGE 7   
+C51 COMPILER V9.05   LCD                                                                   05/09/2023 00:59:06 PAGE 7   
 
  366          
  367          
@@ -446,7 +446,7 @@ line level    source
  425                函数说明：显示字符串
  426                入口数据：x,y显示坐标
  427                          *p 要显示的字符串
-C51 COMPILER V9.05   LCD                                                                   05/07/2023 14:10:18 PAGE 8   
+C51 COMPILER V9.05   LCD                                                                   05/09/2023 00:59:06 PAGE 8   
 
  428                          fc 字的颜色
  429                          bc 字的背景色
@@ -510,7 +510,7 @@ line level    source
  487   1      } 
  488          
  489          
-C51 COMPILER V9.05   LCD                                                                   05/07/2023 14:10:18 PAGE 9   
+C51 COMPILER V9.05   LCD                                                                   05/09/2023 00:59:06 PAGE 9   
 
  490          /******************************************************************************
  491                函数说明：显示两位小数变量
@@ -555,27 +555,28 @@ line level    source
  530   1              u16 i,j;
  531   1              u32 k=0;
  532   1              LCD_Address_Set(x,y,x+length-1,y+width-1);
- 533   1              for(i=0;i<length;i++)
- 534   1              {
- 535   2                      for(j=0;j<width;j++)
- 536   2                      {
- 537   3                              LCD_WR_DATA8(pic[k*2]);
- 538   3                              LCD_WR_DATA8(pic[k*2+1]);
- 539   3                              k++;
- 540   3                      }
- 541   2              }                       
- 542   1      }
- 543          
+ 533   1              LCD_CD_REG(0x2C);
+ 534   1              for(i=0;i<length;i++)
+ 535   1              {
+ 536   2                      for(j=0;j<width;j++)
+ 537   2                      {
+ 538   3                              LCD_WR_DATA8(pic[k*2]);
+ 539   3                              LCD_WR_DATA8(pic[k*2+1]);
+ 540   3                              k++;
+ 541   3                      }
+ 542   2              }                       
+ 543   1      }
  544          
+ 545          
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =   3841    ----
+   CODE SIZE        =   3846    ----
    CONSTANT SIZE    =  13300    ----
    XDATA SIZE       =      2     182
-   PDATA SIZE       =   ----    ----
-C51 COMPILER V9.05   LCD                                                                   05/07/2023 14:10:18 PAGE 10  
+C51 COMPILER V9.05   LCD                                                                   05/09/2023 00:59:06 PAGE 10  
 
+   PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----
