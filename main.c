@@ -173,6 +173,7 @@ void shurulvbo(void)
 		}
 	}
 }
+char flagsetzhichange=0;
 void setzhichange(int a)
 {
 	if(setzhi+a<0)
@@ -186,11 +187,14 @@ void setzhichange(int a)
 		return; 
 	}
 	setzhi=setzhi+a;
+	flagsetzhichange=1;
+	printf("setdianliu%d\r\n",setzhi);
+	// printf("setzhi %d",setzhi);
 }
 
 void keydown(int i) // 按键按下的处理、、、
 {
-	printf("keydown %d\r\n", i);
+	
 	if(i==0)
 	{
 		LED0=~LED0;
@@ -208,17 +212,18 @@ void keydown(int i) // 按键按下的处理、、、
 	if(i==keyok)
 	{
 		nowzhi=setzhi;
-		printf("setdianliu%d\r\n",nowzhi);
+		// printf("setdianliu%d\r\n",nowzhi);
 	}
 }
+int keyshi=5;
 // 按键连续按下多少次的操作。。
 int setbizhi(int times)
 {
-	if(times<100)
+	if(times<15*keyshi)
 	{
 		return 1;
 	}
-	if(times<1000)
+	if(times<30*keyshi)
 	{
 		return 10;
 	}
@@ -228,17 +233,16 @@ int setbizhi(int times)
 void dolongtimes(int i,int times)
 {
 	int xielv;
-	times=times-300;
+	times=times-150;
 	if(times<0)
 	{
 		return ;
 	}
 	xielv=setbizhi(times);
-	if(times%150!=0)
+	if(times%keyshi!=0)
 	{
 		return;
 	}
-	printf("dolongtimes %d xielv %d\r\n", i,xielv);
 	if(i==keylow)
 	{
 		setzhichange(-xielv);
@@ -330,18 +334,21 @@ void showdata()
 void getwendu();
 void showpic()
 {
-	u8 i,j;
-	for(j=0;j<5;j++)
-		{
-			for(i=0;i<6;i++)
-			{
-				LCD_ShowPicture(40*i,120+j*40,40,40,gImage_1);
-			}
-		}
+	// u8 i,j;
+	// for(j=0;j<5;j++)
+	// 	{
+	// 		for(i=0;i<6;i++)
+	// 		{
+	// 			LCD_ShowPicture(40*i,120+j*40,40,40,gImage_1);
+	// 		}
+	// 	}
+	LCD_ShowPicture(40,120,90,120,gImage_1);
 }
 void main()
 {
-	int i=0;
+	
+	int rumtimes=0;
+	delay_ms(100);
 	P0M0 = 0x00;
     P0M1 = 0x02;
     P1M0 = 0x00;
@@ -359,36 +366,37 @@ void main()
     SPSTAT = 0xc0;                              //?????
 	LCD_LED=0;
 	LED0=~LED0;
-	delay_ms(100);
+	delay_ms(50);
 	
 	LCD_Init();
 	UartInit();
 
 	Timer0Init();
-	delay_ms(100);
+	delay_ms(50);
 
 	LCD_Fill(0,0,320,240,WHITE);
-	printf("system begin\r\n");
+	printf("system begin\r");
+	delay_ms(50);
 	while(1)
 	{
-		printf("xxx\r\n");
-		delay_ms(100);
-		showdata();
-		showpic();
-	}
-	
-	while(1)
-	{
-		// shurulvbo();
-	    // keyallchuli();
-        
+		shurulvbo();
+	    keyallchuli();
 		delay_ms(1);
-		if(i++>100)
+		if(flagsetzhichange==1)
 		{
-			i=0;
+			flagsetzhichange=0;
+			showdata();
+			rumtimes=0;
+		}
+		else
+		{
+			rumtimes++;
+		}
+		if(rumtimes++>500)
+		{
+			rumtimes=0;
 			getwendu();
 			showdata();
-			showpic();
 		}
 	}
 }
@@ -443,7 +451,6 @@ void getwendu()
 	delay_ms(10);
 	printf("getwendu");
 	delay_ms(40);
-	// getwendufromrsp()
 }
 void UartIsr() interrupt 4
 {
