@@ -18,8 +18,8 @@ int keylow=1;
 int keyok= 2;
 int keyup=3;
 
-int nowzhi=500;
-int setzhi=500;
+int nowzhi=0;
+int setzhi=0;
 #define maxsetzhi 2047 
 
 
@@ -145,14 +145,6 @@ void shurulvbo(void)
 																			 0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,
 		                                  }; //矩阵按键扫描缓冲区 8ms
 	unsigned char i;
-	// i=X0;
-	// keybuf[0]=i;
-	// i=X1;
-	// keybuf[1]=i;
-	//  i=X2;
-	//  keybuf[2]=i;
-	//   i=X3;
-	//  keybuf[3]=i;
 	i=X0;
 	keybuf[0] = (keybuf[0] << 1) | i;
 	i=X1;
@@ -179,6 +171,9 @@ void setzhichange(int a)
 	if(setzhi+a<0)
 	{
 		setzhi=0;
+		// 0的情况也发，保证能够被收到。。
+		flagsetzhichange=1;
+		printf("setdianliu%d\r\n",setzhi);
 		return ;
 	}
 	if(setzhi+a>maxsetzhi)
@@ -215,7 +210,7 @@ void keydown(int i) // 按键按下的处理、、、
 		// printf("setdianliu%d\r\n",nowzhi);
 	}
 }
-int keyshi=5;
+int keyshi=3;
 // 按键连续按下多少次的操作。。
 int setbizhi(int times)
 {
@@ -310,20 +305,86 @@ void shownwendu()
 {
 	char dataxx[40];
 	sprintf(dataxx,"TMP:%3d.%01d  ",tmp/10,tmp%10);
-	LCD_ShowString(0,120,dataxx,RED,WHITE,32,0);
+	LCD_ShowString(0,80,dataxx,RED,WHITE,32,0);
 }
 
 void shownow()
 {
-	char dataxx[40];
-	sprintf(dataxx,"NOW:%05d",nowzhi);
-	LCD_ShowString(0,40,dataxx,RED,WHITE,32,0);
+	// char dataxx[40];
+	// sprintf(dataxx,"NOW:%05d",nowzhi);
+	// LCD_ShowString(0,40,dataxx,RED,WHITE,32,0);
+}
+
+#define maxjindu 16
+#define qidian 0
+void pingmuclear()
+{
+	char dataxx[60]={0};
+	static int runflag2=0;
+	int i;
+	if(runflag2==1)
+	{
+		return ;
+	}
+	runflag2=1;
+	LCD_Clear(WHITE);
+
+	
+	sprintf(dataxx,"                     ",1);
+	for( i=0;i<10;i++)
+	{
+		LCD_ShowString(0,i*30,dataxx,RED,WHITE,32,0);
+		delay_ms(10);
+	}
+	LCD_ShowString(0,0,"Circle TAC",RED,WHITE,32,0);
+
+}
+void showhenxiang()
+{
+	int i;
+	char dataxx[60]={0};
+	int jindu;
+	static int runflag=0;
+	if(runflag==1)
+	{
+		return ;
+	}
+	runflag=1;
+	
+	for(i=0;i<maxjindu;i++)
+	{
+		dataxx[i]='-';
+	}
+	pingmuclear();
+	LCD_ShowString(qidian,140,dataxx,RED,WHITE,32,0);
+	LCD_ShowString(qidian,140+40,dataxx,RED,WHITE,32,0);
+	LCD_ShowString(qidian,140+40+30,"0            12bit          2047",RED,WHITE,16,0);
+}
+
+void showjindtiao()
+{
+	int i;
+	char dataxx[60]={0};
+	int jindu;
+	jindu=setzhi*maxjindu/maxsetzhi;
+	for(i=0;i<maxjindu;i++)
+	{
+		if(i<jindu)
+		dataxx[i]='<';
+		else
+		dataxx[i]=' ';
+		
+	}
+	showhenxiang();
+	LCD_ShowString(qidian,160,dataxx,RED,WHITE,32,0);
 }
 void showsetzhi()
 {
 	char dataxx[40];
-	sprintf(dataxx,"SET:%05d",setzhi);
-	LCD_ShowString(0,80,dataxx,RED,WHITE,32,0);
+	sprintf(dataxx,"SET:        %04d    ",setzhi);
+	LCD_ShowString(0,120,dataxx,RED,WHITE,32,0);
+	showjindtiao();
+
 }
 void showdata()
 {
@@ -332,18 +393,7 @@ void showdata()
 	shownwendu();
 }
 void getwendu();
-void showpic()
-{
-	// u8 i,j;
-	// for(j=0;j<5;j++)
-	// 	{
-	// 		for(i=0;i<6;i++)
-	// 		{
-	// 			LCD_ShowPicture(40*i,120+j*40,40,40,gImage_1);
-	// 		}
-	// 	}
-	LCD_ShowPicture(40,120,90,120,gImage_1);
-}
+
 void main()
 {
 	
