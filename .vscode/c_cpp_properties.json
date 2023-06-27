@@ -10,6 +10,38 @@
                 "UNICODE",
                 "_UNICODE"
             ]
+        },
+        {
+            "name": "Target 1",
+            "includePath": [
+                "C:\\Keil\\C51\\INC",
+                "d:\\瑞宝科\\合一板卡\\显示屏的"
+            ],
+            "defines": [
+                "__C51__",
+                "__VSCODE_C51__",
+                "reentrant=",
+                "compact=",
+                "small=",
+                "large=",
+                "data=",
+                "idata=",
+                "pdata=",
+                "bdata=",
+                "xdata=",
+                "code=",
+                "bit=char",
+                "sbit=char",
+                "sfr=char",
+                "sfr16=int",
+                "sfr32=int",
+                "interrupt=",
+                "using=",
+                "_at_=",
+                "_priority_=",
+                "_task_="
+            ],
+            "intelliSenseMode": "${default}"
         }
     ],
     "version": 4

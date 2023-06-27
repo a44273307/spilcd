@@ -7,12 +7,12 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include "pic.h"
+
 
 #define u8 unsigned char
 #define FOSC 24000000UL
 #define BRT (65536 - FOSC / 9600 / 4)
-
+int writedizhi(int dizhi,int zhi);
 int keyon= 0;
 int keylow=1;
 int keyok= 2;
@@ -25,14 +25,14 @@ int setzhi=0;
 
 
 bit busy;
-void UartInit() // 11.0592 9600
+void UartInit() // 24 9600
 {
 	SCON = 0x50;		//8位数据,可变波特率
 	AUXR |= 0x40;		//定时器时钟1T模式
 	AUXR &= 0xFE;		//串口1选择定时器1为波特率发生器
 	TMOD &= 0x0F;		//设置定时器模式
-	TL1 = 0x8F;		//设置定时初始值
-	TH1 = 0xFD;		//设置定时初始值
+	TL1 = 0xCC;			//设置定时初始值
+	TH1 = 0xFF;			//设置定时初始值
 	ET1 = 0;		//禁止定时器%d中断
 	TR1 = 1;		//定时器1开始计时
 	ES = 1;
@@ -166,14 +166,22 @@ void shurulvbo(void)
 	}
 }
 char flagsetzhichange=0;
+char flagcanset=0;
+void setdianliu(int zhi)
+{
+	writedizhi(4,zhi);
+}
 void setzhichange(int a)
 {
+	if(flagcanset==0)
+	return ;
 	if(setzhi+a<0)
 	{
 		setzhi=0;
 		// 0的情况也发，保证能够被收到。。
 		flagsetzhichange=1;
-		printf("setdianliu%d\r\n",setzhi);
+		setdianliu(setzhi);
+		// printf("setdianliu%d\r\n",setzhi);
 		return ;
 	}
 	if(setzhi+a>maxsetzhi)
@@ -183,13 +191,10 @@ void setzhichange(int a)
 	}
 	setzhi=setzhi+a;
 	flagsetzhichange=1;
-	printf("setdianliu%d\r\n",setzhi);
-	// printf("setzhi %d",setzhi);
+	setdianliu(setzhi);
 }
-
 void keydown(int i) // 按键按下的处理、、、
 {
-	
 	if(i==0)
 	{
 		LED0=~LED0;
@@ -206,8 +211,8 @@ void keydown(int i) // 按键按下的处理、、、
 	}
 	if(i==keyok)
 	{
-		nowzhi=setzhi;
-		// printf("setdianliu%d\r\n",nowzhi);
+		flagcanset=1-flagcanset;
+		LED2=~LED2;
 	}
 }
 int keyshi=3;
@@ -216,19 +221,19 @@ int setbizhi(int times)
 {
 	if(times<15*keyshi)
 	{
-		return 1;
-	}
-	if(times<30*keyshi)
-	{
 		return 10;
 	}
-	return 50  ;
+	if(times<50*keyshi)
+	{
+		return 50;
+	}
+	return 100  ;
 }
 // 2ms 一次的话，那300ms一次ok的吧。。
 void dolongtimes(int i,int times)
 {
 	int xielv;
-	times=times-150;
+	times=times-300;
 	if(times<0)
 	{
 		return ;
@@ -259,7 +264,7 @@ if(weizhi==3)Y3=zhi;
 }
 void ledclose(int weizhi)
 {
-	if(weizhi==keyon)
+	if(weizhi==keyon || weizhi==keyok)
 	{
 		return ;
 	}
@@ -267,7 +272,7 @@ void ledclose(int weizhi)
 }
 void ledopen(int weizhi)
 {
-	if(weizhi==keyon)
+	if(weizhi==keyon || weizhi==keyok)
 	{
 		return ;
 	}
@@ -317,6 +322,7 @@ void shownow()
 
 #define maxjindu 16
 #define qidian 0
+void showhenxiang();
 void pingmuclear()
 {
 	char dataxx[60]={0};
@@ -327,7 +333,7 @@ void pingmuclear()
 		return ;
 	}
 	runflag2=1;
-	LCD_Clear(WHITE);
+	// LCD_Clear(WHITE);
 
 	
 	sprintf(dataxx,"                     ",1);
@@ -337,6 +343,7 @@ void pingmuclear()
 		delay_ms(10);
 	}
 	LCD_ShowString(0,0,"Circle TAC",RED,WHITE,32,0);
+	showhenxiang();
 
 }
 void showhenxiang()
@@ -355,7 +362,7 @@ void showhenxiang()
 	{
 		dataxx[i]='-';
 	}
-	pingmuclear();
+	
 	LCD_ShowString(qidian,140,dataxx,RED,WHITE,32,0);
 	LCD_ShowString(qidian,140+40,dataxx,RED,WHITE,32,0);
 	LCD_ShowString(qidian,140+40+30,"0            12bit          2047",RED,WHITE,16,0);
@@ -370,7 +377,7 @@ void showjindtiao()
 	for(i=0;i<maxjindu;i++)
 	{
 		if(i<jindu)
-		dataxx[i]='<';
+		dataxx[i]='>';
 		else
 		dataxx[i]=' ';
 		
@@ -384,7 +391,6 @@ void showsetzhi()
 	sprintf(dataxx,"SET:        %04d    ",setzhi);
 	LCD_ShowString(0,120,dataxx,RED,WHITE,32,0);
 	showjindtiao();
-
 }
 void showdata()
 {
@@ -392,41 +398,16 @@ void showdata()
 	showsetzhi();
 	shownwendu();
 }
-void getwendu();
+int getwendu();
+void init();
+int readzhi(int dizhi);
 
 void main()
 {
-	
 	int rumtimes=0;
-	delay_ms(100);
-	P0M0 = 0x00;
-    P0M1 = 0x02;
-    P1M0 = 0x00;
-    P1M1 = 0x00;
-    P2M0 = 0x00;
-    P2M1 = 0x00;
-    P3M0 = 0x00;
-    P3M1 = 0x00;
-    P4M0 = 0x00;
-    P4M1 = 0x00;
-    P5M0 = 0x00;
-    P5M1 = 0x00;
-	
-	SPCTL = 0x50|0x80;                               //??SPI????
-    SPSTAT = 0xc0;                              //?????
-	LCD_LED=0;
-	LED0=~LED0;
-	delay_ms(50);
-	
-	LCD_Init();
-	UartInit();
-
-	Timer0Init();
-	delay_ms(50);
-
-	LCD_Fill(0,0,320,240,WHITE);
-	printf("system begin\r");
-	delay_ms(50);
+	init();
+	setzhi=readzhi(4);
+	// setzhi=readzhi(4);
 	while(1)
 	{
 		shurulvbo();
@@ -445,44 +426,99 @@ void main()
 		if(rumtimes++>500)
 		{
 			rumtimes=0;
-			getwendu();
+
+			tmp=getwendu();
 			showdata();
 		}
 	}
 }
 int weishu1, weishu2, weishu3, weishu4;
-char buf1[100];
+char buf1[300];
 int timeleft1, timeleft2, timeleft3, timeleft4;
+char falgchuankou1=0;
 void chuankou1put(char c)
 {
 	buf1[weishu1++] = c;
-	if (weishu1 > 80)
+	if (weishu1 >= sizeof(buf1))
 		weishu1 = 0;
 	timeleft1 = 10;
 }
-// 写个通用的，懒得去改后面的了。先偷懒了。。。
-void getwendufromrsp(char *p)
+static void chuliguankji(char *ans1)
 {
-	char* index;
-	int ans;
-	index=strstr(p,"getwendu");
-	if(index==0)
-	{
-		return  ;
-	}
-	ans=atoi(index+strlen("getwendu"));
-	if(ans==-1)
-	{
-		return;
-	}
-	tmp=ans;
+    char *index;
+    index = strstr(ans1, "@STCISP#");
+    if (index == 0)
+    {
+        return;
+    }
+    printf("rec @STCISP#,researt now");
+    IAP_CONTR = 0x60;
 }
-void chuankou1jisuan()
+void clearbuff1()
 {
-	getwendufromrsp(buf1);
 	memset(buf1, 0, sizeof(buf1));
 	weishu1 = 0;
+	falgchuankou1=0;
 }
+
+int readzhi(int dizhi)
+{
+	int times=0;
+	int ans;
+	char dataxx[40];
+	sprintf(dataxx,"pingmuGetData getdizhi%d-",dizhi);
+	clearbuff1();
+	printf(dataxx);
+	while (1)
+	{
+		delay_ms(1);
+		if(times++>200)
+		{
+			return 0;
+		}
+		if(falgchuankou1)
+		{
+			char* index;
+			index=strstr(buf1,dataxx);
+			if(index!=0)
+			{
+				ans=atoi(index+strlen(dataxx));
+				printf("read ans%d\n",ans);
+				return ans;
+			}
+			clearbuff1();
+		}
+	}
+}
+// 上到下  灰白黑紫
+int writedizhi(int dizhi,int zhi)
+{
+	int times=0;
+	int ans;
+	char dataxx[40];
+	sprintf(dataxx,"pingmuSetData setdizhi0%d-%d",dizhi,zhi);
+	clearbuff1();
+	printf(dataxx);
+	while (1)
+	{
+		delay_ms(1);
+		if(times++>200)
+		{
+			return 0;
+		}
+		if(falgchuankou1)
+		{
+			char* index;
+			index=strstr(buf1,"pingmuSetData zhi");
+			if(index!=0)
+			{
+				return 0;
+			}
+			clearbuff1();
+		}
+	}
+}
+// 发数据出去，，然后收所有的，检验返回的值。。
 void chuankou1time()
 {
 	if (timeleft1 > 0)
@@ -490,21 +526,19 @@ void chuankou1time()
 		timeleft1--;
 		if (timeleft1 == 0) // 数据一次收完了.
 		{
-			chuankou1jisuan();
+			chuliguankji(buf1);
+			falgchuankou1=1;
 		}
 	}
 }
 
 // 采用中断和处理分开的方式吧，方便调试。。
-void getwendu()
+int getwendu()
 {
-	delay_ms(10);
-	printf("getwendu");
-	delay_ms(40);
+	return readzhi(6);
 }
 void UartIsr() interrupt 4
 {
-
 	if (RI)
 	{
 		RI = 0;
@@ -520,20 +554,38 @@ void tm0_isr() interrupt 1
 
 
 
+void init()
+{
+	delay_ms(10);
+	P0M0 = 0x00;
+    P0M1 = 0x02;
+    P1M0 = 0x00;
+    P1M1 = 0x00;
+    P2M0 = 0x00;
+    P2M1 = 0x00;
+    P3M0 = 0x00;
+    P3M1 = 0x00;
+    P4M0 = 0x00;
+    P4M1 = 0x00;
+    P5M0 = 0x00;
+    P5M1 = 0x00;
+	SPCTL = 0x50|0x80;                               //??SPI????
+    SPSTAT = 0xc0;                              //?????
+	LCD_LED=0;
+	LED0=~LED0;
+	delay_ms(50);
+	
+	LCD_Init();
+	UartInit();
 
+	Timer0Init();
+	delay_ms(50);
 
-
-
-
-
-
-
-
-
-
-
-
-
+	LCD_Fill(0,0,320,240,WHITE);
+	printf("system begin\r");
+	delay_ms(50);
+	pingmuclear();
+}
 
 
 
